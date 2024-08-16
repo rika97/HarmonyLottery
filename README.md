@@ -1,7 +1,6 @@
 # Website
-Visit: https://rika97.github.io/HarmonyLotteryWebsite/
-
-Repo: https://github.com/rika97/HarmonyLotteryWebsite
+ - Visit: https://rika97.github.io/HarmonyLotteryWebsite/
+ - Repo: https://github.com/rika97/HarmonyLotteryWebsite
 
 # Telegram Bot
 Server is deployed on heroku.
