@@ -14,6 +14,8 @@ bot.onText(/\/register/, (msg) => {
     const chatId = msg.chat.id;
     const userId = msg.from.id;
 
+    console.log('[UserAction] Pressed /register');
+
     bot.sendMessage(chatId, `User ${userId} registered!`);
 });
 
@@ -21,6 +23,7 @@ bot.onText(/\/register/, (msg) => {
 bot.onText(/\/buyticket/, (msg) => {
     const chatId = msg.chat.id;
 
+    console.log('[UserAction] Pressed /buyticket');
     // Logic for buying a ticket (e.g., interact with TON blockchain)
     bot.sendMessage(chatId, 'Ticket purchased!');
 });
@@ -29,6 +32,7 @@ bot.onText(/\/buyticket/, (msg) => {
 bot.onText(/\/draw/, (msg) => {
     const chatId = msg.chat.id;
 
+    console.log('[UserAction] Pressed /draw');
     // Logic for drawing the lottery (e.g., pick a random winner)
     bot.sendMessage(chatId, 'The draw is complete! The winner is ...');
 });
@@ -37,6 +41,7 @@ bot.onText(/\/draw/, (msg) => {
 bot.onText(/\/winners/, (msg) => {
     const chatId = msg.chat.id;
 
+    console.log('[UserAction] Pressed /winners');
     // Logic for displaying winners
     bot.sendMessage(chatId, 'Here are the winners: ...');
 });
