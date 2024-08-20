@@ -9,6 +9,10 @@ How to run on local:
 1. Create .env file, and add API keys as in .env.example
 2. Run ```node bot.js```
 
+# Rules
+ - Rewards: new users (1000 ONE), new friends (500 ONE), new tasks (200 ONE).
+ - Daily jackpots. Train keeps going until 10% price gain, someone must add tokens within 30 minutes.
+ - Distribution: 50% random user in winning train, 50% community rewards.
 
 # Tasks
 - [ ] Create user database/management system, figure out userId assignment
