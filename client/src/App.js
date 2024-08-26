@@ -6,22 +6,26 @@ function App() {
   const [points, setPoints] = useState(0);
 
   useEffect(() => {
-    const fetchPoints = async () => {
-      try {
-        if (window.Telegram && window.Telegram.WebApp) {
-          const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
+    if (window.Telegram && window.Telegram.WebApp) {
+      const { WebApp } = window.Telegram;
+
+      document.body.style.backgroundColor = WebApp.themeParams.backgroundColor || '#ffffff';
+
+      const fetchPoints = async () => {
+        try {
+          const userId = WebApp.initDataUnsafe.user.id;
           const response = await fetch(`https://hod1-a52bc53a961e.herokuapp.com/points?userId=${userId}`);
           const data = await response.json();
           setPoints(data.points);
-        } else {
-          console.error('Telegram WebApp is not available.');
+        } catch (error) {
+          console.error('Error fetching points:', error);
         }
-      } catch (error) {
-        console.error('Error fetching points:', error);
-      }
-    };
+      };
 
-    fetchPoints();
+      fetchPoints();
+    } else {
+      console.error('Telegram WebApp is not available.');
+    }
   }, []);
 
   const watchVideo = async (videoId) => {
