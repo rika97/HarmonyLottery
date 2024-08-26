@@ -76,7 +76,7 @@ app.listen(PORT, () => {
 
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
-  const frontendUrl = 'https://hod1.netlify.app/';
+  const frontendUrl = 'https://t.me/HarmonyLotteryBot/hod1app';
 
   bot.sendMessage(chatId, 'Welcome! Click the link below to get started:', {
     reply_markup: {
