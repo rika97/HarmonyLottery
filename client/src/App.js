@@ -10,7 +10,7 @@ function App() {
       try {
         if (window.Telegram && window.Telegram.WebApp) {
           const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
-          const response = await fetch(`https://git.heroku.com/hod1.git/points?userId=${userId}`);
+          const response = await fetch(`https://hod1-a52bc53a961e.herokuapp.com/points?userId=${userId}`);
           const data = await response.json();
           setPoints(data.points);
         } else {
@@ -28,7 +28,7 @@ function App() {
     try {
       if (window.Telegram && window.Telegram.WebApp) {
         const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
-        const response = await fetch(`https://git.heroku.com/hod1.git/watch?userId=${userId}&videoId=${videoId}`);
+        const response = await fetch(`https://hod1-a52bc53a961e.herokuapp.com/watch?userId=${userId}&videoId=${videoId}`);
         const data = await response.json();
         setPoints(data.points);
       } else {
