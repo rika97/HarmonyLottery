@@ -1,6 +1,15 @@
 const express = require('express');
+const path = require('path');
+const TelegramBot = require('node-telegram-bot-api');
+require('dotenv').config();
+
 const app = express();
 const PORT = process.env.PORT || 5001;
+
+const botToken = process.env.TELEGRAM_BOT_TOKEN;
+const bot = new TelegramBot(botToken, { polling: true });
+
+app.use(express.json());
 
 const userPoints = {};
 const videos = [
@@ -55,6 +64,25 @@ app.get('/watch', (req, res) => {
   res.json({ points: userPoints[userId].points });
 });
 
+app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'client', 'build', 'index.html'));
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+});
+
+bot.onText(/\/start/, (msg) => {
+  const chatId = msg.chat.id;
+  const frontendUrl = 'https://hod1.netlify.app/';
+
+  bot.sendMessage(chatId, 'Welcome! Click the link below to get started:', {
+    reply_markup: {
+      inline_keyboard: [[
+        { text: 'Open Hod1', url: frontendUrl }
+      ]]
+    }
+  });
 });
