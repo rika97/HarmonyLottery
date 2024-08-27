@@ -53,7 +53,7 @@ function App() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-  
+
         setPoints(data.points);
         setWatchedVideos(prev => {
           const newWatchedVideos = new Set(prev);
@@ -67,7 +67,6 @@ function App() {
       console.error('Error watching video:', error);
     }
   };
-  
 
   const isVideoWatched = (videoId) => watchedVideos.has(videoId);
 

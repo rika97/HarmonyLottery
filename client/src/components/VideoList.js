@@ -31,20 +31,20 @@ const videos = [
 ];
 
 const VideoList = ({ watchVideo, isVideoWatched }) => {
+  const unwatchedVideos = videos.filter(video => !isVideoWatched(video.id));
+
   return (
     <div>
-      {videos.map(video => (
-        <div key={video.id}>
-          {!isVideoWatched(video.id) ? (
-            <>
-              <h3>{video.title}</h3>
-              <button onClick={() => watchVideo(video.id)}>Watch</button>
-            </>
-          ) : (
-            <h3>{video.title} (Watched)</h3>
-          )}
-        </div>
-      ))}
+      {unwatchedVideos.length > 0 ? (
+        unwatchedVideos.map(video => (
+          <div key={video.id}>
+            <h3>{video.title}</h3>
+            <button onClick={() => watchVideo(video.id)}>Watch</button>
+          </div>
+        ))
+      ) : (
+        <p>No videos left to watch!</p>
+      )}
     </div>
   );
 };
