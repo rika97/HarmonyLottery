@@ -80,6 +80,25 @@ app.get('/watchedVideos', (req, res) => {
   res.json({ videos: userPoints[userId].watchedVideos });
 });
 
+app.post('/updateWatchedVideos', (req, res) => {
+  const { userId, videoId } = req.body;
+
+  if (!userId || !videoId) {
+    return res.status(400).json({ error: 'Invalid request data' });
+  }
+
+  if (!userPoints[userId]) {
+    userPoints[userId] = { points: 0, watchedVideos: [] };
+  }
+
+  if (!userPoints[userId].watchedVideos.includes(videoId)) {
+    userPoints[userId].watchedVideos.push(videoId);
+  }
+
+  res.status(200).json({ message: 'Watched video updated' });
+});
+
+
 app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
 
 app.get('*', (req, res) => {

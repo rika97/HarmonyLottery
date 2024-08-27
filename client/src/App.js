@@ -58,6 +58,17 @@ function App() {
         setWatchedVideos(prev => {
           const newWatchedVideos = new Set(prev);
           newWatchedVideos.add(videoId);
+
+          fetch('https://hod1-a52bc53a961e.herokuapp.com/updateWatchedVideos', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId, videoId }),
+          }).then(res => res.json())
+            .then(result => console.log(result.message))
+            .catch(error => console.error('Error updating watched videos:', error));
+            
           return newWatchedVideos;
         });
       } else {
