@@ -30,17 +30,20 @@ const videos = [
     { id: 27, title: "DeFi 101: Risks, Top Resources, Adoption, Gas Fees, The Future", url: 'https://youtu.be/YhEtaR2dRDw?si=HYfvfPlr25g36eA-', points: 100 }
 ];
 
-const VideoList = ({ watchVideo }) => {
+// VideoList Component
+import React from 'react';
+
+const VideoList = ({ watchVideo, isVideoWatched }) => {
   return (
     <div>
-      <h2>Available Videos</h2>
       {videos.map(video => (
         <div key={video.id}>
           <h3>{video.title}</h3>
-          <button onClick={() => {
-            console.log(`Clicked watch: ${video.id}`)
-            watchVideo(video.id)
-            }}>Watch</button>
+          {isVideoWatched(video.id) ? (
+            <p>You have watched this video</p>
+          ) : (
+            <button onClick={() => watchVideo(video.id)}>Watch</button>
+          )}
         </div>
       ))}
     </div>

@@ -34,8 +34,11 @@ function App() {
   const fetchWatchedVideos = async (userId) => {
     try {
       const response = await fetch(`https://hod1-a52bc53a961e.herokuapp.com/watchedVideos?userId=${userId}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const data = await response.json();
-      setWatchedVideos(new Set(data.videos));
+      setWatchedVideos(new Set(data.videos || []));
     } catch (error) {
       console.error('Error fetching watched videos:', error);
     }
@@ -46,10 +49,17 @@ function App() {
       if (window.Telegram && window.Telegram.WebApp) {
         const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
         const response = await fetch(`https://hod1-a52bc53a961e.herokuapp.com/watch?userId=${userId}&videoId=${videoId}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data = await response.json();
-
+  
         setPoints(data.points);
-        setWatchedVideos(prev => new Set(prev.add(videoId)));
+        setWatchedVideos(prev => {
+          const newWatchedVideos = new Set(prev);
+          newWatchedVideos.add(videoId);
+          return newWatchedVideos;
+        });
       } else {
         console.error('Telegram WebApp is not available.');
       }
@@ -57,6 +67,7 @@ function App() {
       console.error('Error watching video:', error);
     }
   };
+  
 
   const isVideoWatched = (videoId) => watchedVideos.has(videoId);
 
