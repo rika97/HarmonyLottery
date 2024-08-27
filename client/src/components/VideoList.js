@@ -30,9 +30,6 @@ const videos = [
     { id: 27, title: "DeFi 101: Risks, Top Resources, Adoption, Gas Fees, The Future", url: 'https://youtu.be/YhEtaR2dRDw?si=HYfvfPlr25g36eA-', points: 100 }
 ];
 
-// VideoList Component
-import React from 'react';
-
 const VideoList = ({ watchVideo, isVideoWatched }) => {
   return (
     <div>
