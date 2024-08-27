@@ -35,16 +35,19 @@ const VideoList = ({ watchVideo, isVideoWatched }) => {
     <div>
       {videos.map(video => (
         <div key={video.id}>
-          <h3>{video.title}</h3>
-          {isVideoWatched(video.id) ? (
-            <p>You have watched this video</p>
+          {!isVideoWatched(video.id) ? (
+            <>
+              <h3>{video.title}</h3>
+              <button onClick={() => watchVideo(video.id)}>Watch</button>
+            </>
           ) : (
-            <button onClick={() => watchVideo(video.id)}>Watch</button>
+            <h3>{video.title} (Watched)</h3>
           )}
         </div>
       ))}
     </div>
   );
 };
+
 
 export default VideoList;
