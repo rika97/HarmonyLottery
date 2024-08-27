@@ -4,6 +4,7 @@ import PointsBalance from './components/PointsBalance';
 
 function App() {
   const [points, setPoints] = useState(0);
+  const [watchedVideos, setWatchedVideos] = useState(new Set());
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
@@ -11,22 +12,33 @@ function App() {
 
       document.body.style.backgroundColor = WebApp.themeParams.backgroundColor || '#ffffff';
 
-      const fetchPoints = async () => {
-        try {
-          const userId = WebApp.initDataUnsafe.user.id;
-          const response = await fetch(`https://hod1-a52bc53a961e.herokuapp.com/points?userId=${userId}`);
-          const data = await response.json();
-          setPoints(data.points);
-        } catch (error) {
-          console.error('Error fetching points:', error);
-        }
-      };
-
-      fetchPoints();
+      fetchPoints(userId);
+      fetchWatchedVideos(userId);
     } else {
       console.error('Telegram WebApp is not available.');
     }
   }, []);
+
+  const fetchPoints = async () => {
+    try {
+      const userId = WebApp.initDataUnsafe.user.id;
+      const response = await fetch(`https://hod1-a52bc53a961e.herokuapp.com/points?userId=${userId}`);
+      const data = await response.json();
+      setPoints(data.points);
+    } catch (error) {
+      console.error('Error fetching points:', error);
+    }
+  };
+
+  const fetchWatchedVideos = async (userId) => {
+    try {
+      const response = await fetch(`https://hod1-a52bc53a961e.herokuapp.com/watchedVideos?userId=${userId}`);
+      const data = await response.json();
+      setWatchedVideos(new Set(data.videos));
+    } catch (error) {
+      console.error('Error fetching watched videos:', error);
+    }
+  };
 
   const watchVideo = async (videoId) => {
     try {
@@ -34,7 +46,9 @@ function App() {
         const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
         const response = await fetch(`https://hod1-a52bc53a961e.herokuapp.com/watch?userId=${userId}&videoId=${videoId}`);
         const data = await response.json();
+
         setPoints(data.points);
+        setWatchedVideos(prev => new Set(prev.add(videoId)));
       } else {
         console.error('Telegram WebApp is not available.');
       }
@@ -43,11 +57,13 @@ function App() {
     }
   };
 
+  const isVideoWatched = (videoId) => watchedVideos.has(videoId);
+
   return (
     <div>
       <h1>Hod1</h1>
       <PointsBalance points={points} />
-      <VideoList watchVideo={watchVideo} />
+      <VideoList watchVideo={watchVideo} isVideoWatched={isVideoWatched}/>
     </div>
   );
 }

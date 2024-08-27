@@ -70,6 +70,16 @@ app.get('/watch', (req, res) => {
   res.json({ points: userPoints[userId].points });
 });
 
+app.get('/watchedVideos', (req, res) => {
+  const userId = req.query.userId;
+
+  if (userPoints[userId]) {
+    res.json({ videos: userPoints[userId].watchedVideos });
+  } else {
+    res.json({ videos: [] });
+  }
+});
+
 app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
 
 app.get('*', (req, res) => {
