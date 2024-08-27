@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 const TelegramBot = require('node-telegram-bot-api');
 require('dotenv').config();
@@ -9,6 +10,11 @@ const PORT = process.env.PORT || 5001;
 const botToken = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new TelegramBot(botToken, { polling: true });
 
+app.use(cors({
+    origin: 'https://hod1.netlify.app',
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type']
+  }));
 app.use(express.json());
 
 const userPoints = {};

@@ -37,7 +37,10 @@ const VideoList = ({ watchVideo }) => {
       {videos.map(video => (
         <div key={video.id}>
           <h3>{video.title}</h3>
-          <button onClick={() => watchVideo(video.id)}>Watch</button>
+          <button onClick={() => {
+            console.log(`Clicked watch: ${video.id}`)
+            watchVideo(video.id)
+            }}>Watch</button>
         </div>
       ))}
     </div>

@@ -3,7 +3,7 @@ import React from 'react';
 const PointsBalance = ({ points }) => {
   return (
     <div>
-      <h2>Your NIL Points: {points}</h2>
+      <h2>Balance: {points} NIL</h2>
     </div>
   );
 };
