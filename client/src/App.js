@@ -12,6 +12,8 @@ function App() {
 
       document.body.style.backgroundColor = WebApp.themeParams.backgroundColor || '#ffffff';
 
+      const userId = WebApp.initDataUnsafe.user.id;
+
       fetchPoints(userId);
       fetchWatchedVideos(userId);
     } else {
@@ -19,9 +21,8 @@ function App() {
     }
   }, []);
 
-  const fetchPoints = async () => {
+  const fetchPoints = async (userId) => {
     try {
-      const userId = WebApp.initDataUnsafe.user.id;
       const response = await fetch(`https://hod1-a52bc53a961e.herokuapp.com/points?userId=${userId}`);
       const data = await response.json();
       setPoints(data.points);
