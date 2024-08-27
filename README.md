@@ -7,7 +7,7 @@ Production Deploy on Telegram: @HarmonyLotteryBot
 - **Deployment**: [Netlify](https://hod1.netlify.app/) (Automatic deployment from `miniApp` branch)
 
 ## Back-End
-- **Framework**: Express
+- **Framework**: Express, Node.js
 - **Deployment**: [Heroku](https://hod1-a52bc53a961e.herokuapp.com/) (Manual deployment with `git push heroku master`)
 - **Components**: Includes both bot server and API server in `index.js`
 
@@ -43,3 +43,19 @@ Production Deploy on Telegram: @HarmonyLotteryBot
 
 # Notes
 Previous testing stuff are stored on other branches (chat-based inetraction, lottery, etc)
+
+# Instructions for replicating:
+1. Install dependencies for both client and server:
+```
+npm i
+```
+2. Telegram: Create your bot with Telegram BotFather. Get API key, `touch .env` in `/server` (example given in .env.example). 
+3. Server-side: Dpeloy to server-hosting or on local:
+```
+cd server
+node index.js
+```
+4. Modify client-side API endpoint URLs in `client/App.js` with your PORT or deployed server URL.
+5. Client-side: Deploy client side on hosting app. Make sure to add deploy setting `npm run build`. (Will need to be on hosting app, not local since need to connect through Telegram).
+6. Give command to BotFather `/newapp` and register your Web App URL (front-end deploy link).
+
