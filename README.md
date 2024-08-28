@@ -40,6 +40,8 @@ Production Deploy on Telegram: @HarmonyLotteryBot
 - [ ] **Video List Management**: Clean up and streamline the video list to allow updates from a single file.
 - [ ] **TMA UI Improvement**: Enhance the Telegram Mini App UI with features such as back buttons and better navigation.
 - [ ] Update bot details (change bot username)
+- [x] Add inline keyboard menu button 'play'
+- [ ] Integrate Youtube API
 
 # Notes
 Previous testing stuff are stored on other branches (chat-based inetraction, lottery, etc)
