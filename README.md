@@ -7,7 +7,7 @@ Production Deploy on Telegram: @HarmonyLotteryBot
 - **Deployment**: [Netlify](https://hod1.netlify.app/) (Automatic deployment from `miniApp` branch)
 
 ## Back-End
-- **Framework**: Express, Node.js
+- **Framework**: Express, Node.js, Axios
 - **Deployment**: [Heroku](https://hod1-a52bc53a961e.herokuapp.com/) (Manual deployment with `git push heroku master`)
 - **Components**: Includes both bot server and API server in `index.js`
 
@@ -28,6 +28,10 @@ Production Deploy on Telegram: @HarmonyLotteryBot
 - **POST /updateWatchedVideos**
   - **Parameters**: `userId`, `videoId`
   - **Description**: Updates the user's watched videos list.
+ 
+- **GET /youtube/viewcount**
+  - **Parameters**: `url`
+  - **Description**: Fetches view count of specific youtube video from url
 
 ## Telegram MiniApp
 - **Integration**: [Telegram MiniApp](https://t.me/HarmonyLotteryBot/hod1app)
@@ -41,7 +45,7 @@ Production Deploy on Telegram: @HarmonyLotteryBot
 - [ ] **TMA UI Improvement**: Enhance the Telegram Mini App UI with features such as back buttons and better navigation.
 - [ ] Update bot details (change bot username)
 - [x] Add inline keyboard menu button 'play'
-- [ ] Integrate Youtube API
+- [x] Integrate Youtube API
 
 # Notes
 Previous testing stuff are stored on other branches (chat-based inetraction, lottery, etc)
