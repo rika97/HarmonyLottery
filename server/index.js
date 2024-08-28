@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const TelegramBot = require('node-telegram-bot-api');
+const axios = require('axios');
 require('dotenv').config();
 
 const app = express();
@@ -9,6 +10,7 @@ const PORT = process.env.PORT || 5001;
 
 const botToken = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new TelegramBot(botToken, { polling: true });
+const youtubeApiKey = process.env.YOUTUBE_API_KEY;
 
 app.use(cors({
     origin: 'https://hod1.netlify.app',
@@ -97,6 +99,38 @@ app.post('/updateWatchedVideos', (req, res) => {
 
   res.status(200).json({ message: 'Watched video updated' });
 });
+
+app.get('/youtube/viewcount', async (req, res) => {
+  const { url } = req.query;
+
+  const videoIdMatch = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+
+  if (!videoIdMatch) {
+      return res.status(400).json({ error: 'Invalid YouTube URL' });
+  }
+
+  const videoId = videoIdMatch[1];
+
+  try {
+      const response = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoId}&key=${youtubeApiKey}`);
+
+      console.log('YouTube API response:', response.data);
+
+      const statistics = response.data.items[0]?.statistics;
+
+      if (!statistics) {
+        throw new Error('No statistics found for the video');
+      }
+
+      res.json({
+          viewCount: statistics.viewCount
+      });
+  } catch (error) {
+      console.error('Error fetching YouTube video statistics:', error);
+      res.status(500).json({ error: 'Failed to fetch video statistics' });
+  }
+});
+
 
 
 app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
