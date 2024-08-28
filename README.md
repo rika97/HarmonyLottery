@@ -64,4 +64,5 @@ node index.js
 4. Modify client-side API endpoint URLs in `client/App.js` with your PORT or deployed server URL.
 5. Client-side: Deploy client side on hosting app. Make sure to add deploy setting `npm run build`. (Will need to be on hosting app, not local since need to connect through Telegram).
 6. Give command to BotFather `/newapp` and register your Web App URL (front-end deploy link).
+7. (Optional) Give command to BotFather `/setmenubutton` to add menu button to bot.
 
