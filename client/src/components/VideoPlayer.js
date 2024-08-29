@@ -5,21 +5,31 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
   const [playedSeconds, setPlayedSeconds] = useState(0);
   const [duration, setDuration] = useState(0);
   const [watchTime, setWatchTime] = useState(0);
+  const [lastTime, setLastTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     setDuration(0);
     setPlayedSeconds(0);
     setWatchTime(0);
+    setLastTime(0);
     setIsPlaying(false);
   }, [videoUrl]);
 
   const handleProgress = (progress) => {
-    setPlayedSeconds(progress.playedSeconds);
+    const { playedSeconds } = progress;
+
+    setPlayedSeconds(playedSeconds);
 
     if (isPlaying) {
-      setWatchTime((prev) => prev + progress.playedSeconds - (playedSeconds || 0));
+      const timeIncrement = playedSeconds - lastTime;
+
+      if (timeIncrement > 0) { // Only add positive increments
+        setWatchTime((prev) => prev + timeIncrement);
+      }
     }
+
+    setLastTime(playedSeconds);
 
     if (duration > 0 && watchTime / duration >= threshold) {
       onThresholdReached();
