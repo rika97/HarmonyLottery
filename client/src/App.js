@@ -5,7 +5,6 @@ import PointsBalance from './components/PointsBalance';
 
 function App() {
   const [points, setPoints] = useState(0);
-  const [thresholdview, setThresholdView] = useState('no');
   const [watchedVideos, setWatchedVideos] = useState(new Set());
   const [currentVideoUrl, setCurrentVideoUrl] = useState(null);
   const [currentVideoId, setCurrentVideoId] = useState(null);
@@ -54,7 +53,6 @@ function App() {
   };
 
   const handleThresholdReached = async () => {
-    setThresholdView("yes")
     try {
       if (window.Telegram && window.Telegram.WebApp) {
         const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
@@ -99,7 +97,6 @@ function App() {
     <div>
       <h1>Hod1</h1>
       <PointsBalance points={points} />
-      <h2>Handle threshold called?{thresholdview}</h2>
       <VideoList watchVideo={watchVideo} isVideoWatched={isVideoWatched} />
       {currentVideoUrl && (
         <VideoPlayer
