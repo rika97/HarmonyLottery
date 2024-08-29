@@ -5,6 +5,7 @@ Production Deploy on Telegram: @HarmonyLotteryBot
 ## Front-End
 - **Framework**: React
 - **Deployment**: [Netlify](https://hod1.netlify.app/) (Automatic deployment from `miniApp` branch)
+- **Video Player**: User's viewing status is consistently tracked down every fraction of a second to ensure the user has indeed watched the video until the end to reward NIL points. Users must watch threshold (90%) of video duration to claim reward. If video is skipped (>3 seconds), watch time counter is halted.
 
 ## Back-End
 - **Framework**: Express, Node.js, Axios
