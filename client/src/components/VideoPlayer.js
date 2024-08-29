@@ -21,7 +21,7 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
         controls
         playing
         onProgress={handleProgress}
-        onEnded={onClose}
+        onEnded={handleProgress}
         width="100%"
         height="100%"
       />
