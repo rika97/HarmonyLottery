@@ -1,6 +1,5 @@
 /* eslint-disable */
 
-
 import React from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -29,11 +28,10 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
     const { playedSeconds, loadedDuration } = progress;
 
     setPlayedSeconds(playedSeconds);
-    setDuration(loadedDuration);
+    setDuration(loadedDuration || duration);
 
     if (isPlaying) {
       const timeIncrement = playedSeconds - lastTime;
-
       if (timeIncrement > 0) {
         setWatchTime((prev) => prev + timeIncrement);
       }
@@ -73,10 +71,22 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
       open={!!videoUrl}
       onClose={onClose}
       fullScreen
-      sx={{ '.MuiDialogContent-root': { padding: 0 } }} 
+      PaperProps={{
+        style: {
+          height: '100vh',
+          width: '100vw',
+        },
+      }}
     >
       <DialogContent
-        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100%',
+          position: 'relative',
+          padding: 0,
+        }}
       >
         <ReactPlayer
           url={videoUrl}
@@ -96,9 +106,25 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
         >
           <CloseIcon />
         </IconButton>
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 20,
+            left: 20,
+            color: 'white',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            padding: '10px',
+            borderRadius: '5px',
+          }}
+        >
+          <p>Played Seconds: {playedSeconds.toFixed(2)}</p>
+          <p>Duration: {duration.toFixed(2)}</p>
+          <p>Watch Time: {watchTime.toFixed(2)}</p>
+        </div>
       </DialogContent>
     </Dialog>
   );
 };
 
 export default VideoPlayer;
+
