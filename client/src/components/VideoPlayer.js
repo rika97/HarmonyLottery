@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import ReactPlayer from 'react-player';
 
 const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 }) => {
-  const [playedSeconds, setPlayedSeconds] = useState(0);
-  const [duration, setDuration] = useState(0);
+//   const [playedSeconds, setPlayedSeconds] = useState(0);
+//   const [duration, setDuration] = useState(0);
 
   const handleProgress = (progress) => {
-    setPlayedSeconds(progress.playedSeconds);
-    setDuration(progress.loadedDuration || duration);
+    // setPlayedSeconds(progress.playedSeconds);
+    // setDuration(progress.loadedDuration || duration);
 
     onThresholdReached();
     // if (duration > 0 && playedSeconds / duration >= threshold) {
