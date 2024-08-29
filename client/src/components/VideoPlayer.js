@@ -30,7 +30,8 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
 
     if (isPlaying) {
       const timeIncrement = playedSeconds - lastTime;
-      if (timeIncrement > 0) {
+      const maxAllowedIncrement = 3; // disable skip/fastfowarding
+      if (timeIncrement > 0 && timeIncrement <= maxAllowedIncrement) {
         setWatchTime((prev) => prev + timeIncrement);
       }
     }
