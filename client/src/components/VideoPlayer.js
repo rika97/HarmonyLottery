@@ -20,7 +20,6 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
     setWatchTime(0);
     setLastTime(0);
     setIsPlaying(false);
-    setIsThresholdReached(false);
   }, [videoUrl]);
 
   const handleProgress = (progress) => {
