@@ -4,22 +4,38 @@ import ReactPlayer from 'react-player';
 const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 }) => {
   const [playedSeconds, setPlayedSeconds] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [watchTime, setWatchTime] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     setDuration(0);
     setPlayedSeconds(0);
+    setWatchTime(0);
+    setIsPlaying(false);
   }, [videoUrl]);
 
   const handleProgress = (progress) => {
     setPlayedSeconds(progress.playedSeconds);
 
-    if (duration > 0 && playedSeconds / duration >= threshold) {
+    if (isPlaying) {
+      setWatchTime((prev) => prev + progress.playedSeconds - (playedSeconds || 0));
+    }
+
+    if (duration > 0 && watchTime / duration >= threshold) {
       onThresholdReached();
     }
   };
 
   const handleDuration = (duration) => {
     setDuration(duration);
+  };
+
+  const handlePlay = () => {
+    setIsPlaying(true);
+  };
+
+  const handlePause = () => {
+    setIsPlaying(false);
   };
 
   return (
@@ -30,6 +46,8 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
         playing
         onProgress={handleProgress}
         onDuration={handleDuration}
+        onPlay={handlePlay}
+        onPause={handlePause}
         onEnded={onClose}
         width="100%"
         height="100%"
@@ -37,6 +55,7 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
       <button onClick={onClose} style={{ position: 'absolute', top: '10px', right: '10px' }}>Close</button>
       <div>Played Seconds: {playedSeconds}</div>
       <div>Duration: {duration}</div>
+      <div>Continuous Watch Time: {watchTime}</div>
     </div>
   );
 };
