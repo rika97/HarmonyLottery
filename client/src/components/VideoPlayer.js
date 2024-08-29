@@ -1,18 +1,20 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ReactPlayer from 'react-player';
 
 const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 }) => {
-//   const [playedSeconds, setPlayedSeconds] = useState(0);
-//   const [duration, setDuration] = useState(0);
+  const [playedSeconds, setPlayedSeconds] = useState(0);
+  const [duration, setDuration] = useState(0);
+
+  useEffect(() => {
+    if (duration > 0 && playedSeconds / duration >= threshold) {
+      console.log('Threshold reached!');
+      onThresholdReached();
+    }
+  }, [playedSeconds, duration, threshold, onThresholdReached]);
 
   const handleProgress = (progress) => {
-    // setPlayedSeconds(progress.playedSeconds);
-    // setDuration(progress.loadedDuration || duration);
-
-    onThresholdReached();
-    // if (duration > 0 && playedSeconds / duration >= threshold) {
-    //   onThresholdReached();
-    // }
+    setPlayedSeconds(progress.playedSeconds);
+    setDuration(progress.loadedDuration || duration);
   };
 
   return (
@@ -22,7 +24,7 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
         controls
         playing
         onProgress={handleProgress}
-        onEnded={handleProgress}
+        onEnded={onClose}
         width="100%"
         height="100%"
       />
