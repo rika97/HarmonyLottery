@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 import ReactPlayer from 'react-player';
-import './VideoPlayer.css';
 
 const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 }) => {
-  const [playedSeconds, setPlayedSeconds] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [watchTime, setWatchTime] = useState(0);
-  const [lastTime, setLastTime] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isThresholdReached, setIsThresholdReached] = useState(false);
+  const [playedSeconds, setPlayedSeconds] = React.useState(0);
+  const [duration, setDuration] = React.useState(0);
+  const [watchTime, setWatchTime] = React.useState(0);
+  const [lastTime, setLastTime] = React.useState(0);
+  const [isPlaying, setIsPlaying] = React.useState(false);
+  const [isThresholdReached, setIsThresholdReached] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     setDuration(0);
     setPlayedSeconds(0);
     setWatchTime(0);
@@ -27,7 +30,7 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
 
     if (isPlaying) {
       const timeIncrement = playedSeconds - lastTime;
-      
+
       if (timeIncrement > 0) {
         setWatchTime((prev) => prev + timeIncrement);
       }
@@ -63,24 +66,35 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
   };
 
   return (
-    <div className="video-player-fullscreen">
-      <ReactPlayer
-        url={videoUrl}
-        controls
-        playing
-        onProgress={handleProgress}
-        onDuration={handleDuration}
-        onPlay={handlePlay}
-        onPause={handlePause}
-        onEnded={handleEnded}
-        width="100%"
-        height="100%"
-      />
-      <button className="close-button" onClick={onClose}>Close</button>
-      <div>Played Seconds: {playedSeconds}</div>
-      <div>Duration: {duration}</div>
-      <div>Continuous Watch Time: {watchTime}</div>
-    </div>
+    <Dialog
+      open={!!videoUrl}
+      onClose={onClose}
+      fullScreen
+      sx={{ '.MuiDialogContent-root': { padding: 0 } }} 
+    >
+      <DialogContent
+        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}
+      >
+        <ReactPlayer
+          url={videoUrl}
+          controls
+          playing
+          onProgress={handleProgress}
+          onDuration={handleDuration}
+          onPlay={handlePlay}
+          onPause={handlePause}
+          onEnded={handleEnded}
+          width="100%"
+          height="100%"
+        />
+        <IconButton
+          onClick={onClose}
+          sx={{ position: 'absolute', top: 20, right: 20, color: 'white' }}
+        >
+          <CloseIcon />
+        </IconButton>
+      </DialogContent>
+    </Dialog>
   );
 };
 
