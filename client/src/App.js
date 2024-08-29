@@ -85,16 +85,12 @@ function App() {
       }
     } catch (error) {
       console.error('Error completing video:', error);
-    } finally {
-      // Close the video player after handling threshold
-      setCurrentVideoUrl(null);
-      setCurrentVideoId(null);
     }
   };
 
   const closeVideoPlayer = () => {
-    setCurrentVideoUrl(null); // Close the video player
-    setCurrentVideoId(null); // Clear the current video ID
+    setCurrentVideoUrl(null);
+    setCurrentVideoId(null);
   };
 
   const isVideoWatched = (videoId) => watchedVideos.has(videoId);
