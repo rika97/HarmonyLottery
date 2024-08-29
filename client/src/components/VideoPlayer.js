@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
+import './VideoPlayer.css';
 
 const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 }) => {
   const [playedSeconds, setPlayedSeconds] = useState(0);
@@ -7,6 +8,7 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
   const [watchTime, setWatchTime] = useState(0);
   const [lastTime, setLastTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isThresholdReached, setIsThresholdReached] = useState(false);
 
   useEffect(() => {
     setDuration(0);
@@ -14,17 +16,19 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
     setWatchTime(0);
     setLastTime(0);
     setIsPlaying(false);
+    setIsThresholdReached(false);
   }, [videoUrl]);
 
   const handleProgress = (progress) => {
-    const { playedSeconds } = progress;
+    const { playedSeconds, loadedDuration } = progress;
 
     setPlayedSeconds(playedSeconds);
+    setDuration(loadedDuration);
 
     if (isPlaying) {
       const timeIncrement = playedSeconds - lastTime;
-
-      if (timeIncrement > 0) { // Only add positive increments
+      
+      if (timeIncrement > 0) {
         setWatchTime((prev) => prev + timeIncrement);
       }
     }
@@ -32,7 +36,10 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
     setLastTime(playedSeconds);
 
     if (duration > 0 && watchTime / duration >= threshold) {
-      onThresholdReached();
+      if (!isThresholdReached) {
+        setIsThresholdReached(true);
+        onThresholdReached();
+      }
     }
   };
 
@@ -48,8 +55,15 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
     setIsPlaying(false);
   };
 
+  const handleEnded = () => {
+    if (watchTime / duration < threshold) {
+      console.log('Video ended before reaching the threshold.');
+    }
+    onClose();
+  };
+
   return (
-    <div className="video-player" style={{ position: 'relative' }}>
+    <div className="video-player-fullscreen">
       <ReactPlayer
         url={videoUrl}
         controls
@@ -58,14 +72,14 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
         onDuration={handleDuration}
         onPlay={handlePlay}
         onPause={handlePause}
-        onEnded={onClose}
+        onEnded={handleEnded}
         width="100%"
         height="100%"
       />
-      <button onClick={onClose} style={{ position: 'absolute', top: '10px', right: '10px' }}>Close</button>
-      {/* <div>Played Seconds: {playedSeconds}</div>
+      <button className="close-button" onClick={onClose}>Close</button>
+      <div>Played Seconds: {playedSeconds}</div>
       <div>Duration: {duration}</div>
-      <div>Continuous Watch Time: {watchTime}</div> */}
+      <div>Continuous Watch Time: {watchTime}</div>
     </div>
   );
 };
