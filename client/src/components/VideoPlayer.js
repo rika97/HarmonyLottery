@@ -113,9 +113,9 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
             borderRadius: '5px',
           }}
         >
-          <p>Played Seconds: {playedSeconds.toFixed(2)}</p>
+          {/* <p>Played Seconds: {playedSeconds.toFixed(2)}</p>
           <p>Duration: {duration.toFixed(2)}</p>
-          <p>Watch Time: {watchTime.toFixed(2)}</p>
+          <p>Watch Time: {watchTime.toFixed(2)}</p> */}
         </div>
       </DialogContent>
     </Dialog>
