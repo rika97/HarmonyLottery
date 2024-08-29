@@ -38,8 +38,9 @@ Production Deploy on Telegram: @HarmonyLotteryBot
 
 # Tasks
 - [ ] **Database**: Port user database from `index.js` server to an actual database.
-- [ ] **Video Player**: Implement a video player to embed YouTube videos when clicked on "watch" button.
-- [ ] **Verify watching video**: Implement a way to confirm the user has watched the video until the end, no skipping or just clicking on url.
+- [x] **Video Player**: Implement a video player to embed YouTube videos when clicked on "watch" button.
+- [x] **Verify watching video**: Implement a way to confirm the user has watched the video until the end, no skipping or just clicking on url.
+- [ ] Fix fastfowarding increasing watch time issue
 - [ ] **UI Update**: Enhance the web UI for better visuals.
 - [ ] **Video List Management**: Clean up and streamline the video list to allow updates from a single file.
 - [ ] **TMA UI Improvement**: Enhance the Telegram Mini App UI with features such as back buttons and better navigation.
