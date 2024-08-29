@@ -102,7 +102,7 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
         >
           <CloseIcon />
         </IconButton>
-        {/* <div
+        <div
           style={{
             position: 'absolute',
             bottom: 20,
@@ -116,7 +116,7 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
           <p>Played Seconds: {playedSeconds.toFixed(2)}</p>
           <p>Duration: {duration.toFixed(2)}</p>
           <p>Watch Time: {watchTime.toFixed(2)}</p>
-        </div> */}
+        </div>
       </DialogContent>
     </Dialog>
   );
