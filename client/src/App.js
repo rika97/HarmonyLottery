@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Typography, Box, Paper } from '@mui/material';
 import VideoList from './components/VideoList';
 import VideoPlayer from './components/VideoPlayer';
 import PointsBalance from './components/PointsBalance';
@@ -95,24 +94,18 @@ function App() {
   const isVideoWatched = (videoId) => watchedVideos.has(videoId);
 
   return (
-    <Container maxWidth="sm">
-      <Box textAlign="center" my={4}>
-        <Typography variant="h3" gutterBottom>
-          Hod1
-        </Typography>
-        <PointsBalance points={points} />
-        <Paper elevation={3} sx={{ padding: 2 }}>
-          <VideoList watchVideo={watchVideo} isVideoWatched={isVideoWatched} />
-        </Paper>
-        {currentVideoUrl && (
-          <VideoPlayer
-            videoUrl={currentVideoUrl}
-            onThresholdReached={handleThresholdReached}
-            onClose={closeVideoPlayer}
-          />
-        )}
-      </Box>
-    </Container>
+    <div>
+      <h1>Hod1</h1>
+      <PointsBalance points={points} />
+      <VideoList watchVideo={watchVideo} isVideoWatched={isVideoWatched} />
+      {currentVideoUrl && (
+        <VideoPlayer
+          videoUrl={currentVideoUrl}
+          onThresholdReached={handleThresholdReached}
+          onClose={closeVideoPlayer}
+        />
+      )}
+    </div>
   );
 }
 
