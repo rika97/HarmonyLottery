@@ -13,7 +13,6 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
   const [watchTime, setWatchTime] = React.useState(0);
   const [lastTime, setLastTime] = React.useState(0);
   const [isPlaying, setIsPlaying] = React.useState(false);
-  const [isThresholdReached, setIsThresholdReached] = React.useState(false);
 
   React.useEffect(() => {
     setDuration(0);
@@ -40,11 +39,8 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
     setLastTime(playedSeconds);
 
     if (duration > 0 && watchTime / duration >= threshold) {
-      if (!isThresholdReached) {
-        setIsThresholdReached(true);
         onThresholdReached();
       }
-    }
   };
 
   const handleDuration = (duration) => {
