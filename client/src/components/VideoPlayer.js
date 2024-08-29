@@ -71,38 +71,46 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
         style: {
           height: '100vh',
           width: '100vw',
+          position: 'relative',
         },
       }}
     >
+        <IconButton
+            onClick={onClose}
+            sx={{
+            position: 'absolute',
+            top: 10, // Adjust the distance from the top
+            right: 10, // Adjust the distance from the right
+            zIndex: 10, // Ensures it appears on top of all elements except the video
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', // Optional background for better visibility
+            color: 'white',
+            }}
+        >
+            <CloseIcon />
+        </IconButton>
       <DialogContent
         sx={{
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
           height: '100%',
-          position: 'relative',
           padding: 0,
         }}
       >
         <ReactPlayer
-          url={videoUrl}
-          controls
-          playing
-          onProgress={handleProgress}
-          onDuration={handleDuration}
-          onPlay={handlePlay}
-          onPause={handlePause}
-          onEnded={handleEnded}
-          width="100%"
-          height="100%"
+        url={videoUrl}
+        controls
+        playing
+        onProgress={handleProgress}
+        onDuration={handleDuration}
+        onPlay={handlePlay}
+        onPause={handlePause}
+        onEnded={handleEnded}
+        width="100%"
+        height="100%"
+        style={{ zIndex: 1 }} // Keep the video behind the button
         />
-        <IconButton
-          onClick={onClose}
-          sx={{ position: 'absolute', top: 20, right: 20, color: 'white' }}
-        >
-          <CloseIcon />
-        </IconButton>
-        <div
+        {/* <div
           style={{
             position: 'absolute',
             bottom: 20,
@@ -116,7 +124,7 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
           <p>Played Seconds: {playedSeconds.toFixed(2)}</p>
           <p>Duration: {duration.toFixed(2)}</p>
           <p>Watch Time: {watchTime.toFixed(2)}</p>
-        </div>
+        </div> */}
       </DialogContent>
     </Dialog>
   );
