@@ -29,6 +29,8 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
         height="100%"
       />
       <button onClick={onClose} style={{ position: 'absolute', top: '10px', right: '10px' }}>Close</button>
+      <div>Played Seconds: {playedSeconds}</div>
+      <div>Duration: {duration}</div>
     </div>
   );
 };
