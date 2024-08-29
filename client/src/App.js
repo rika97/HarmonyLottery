@@ -85,6 +85,11 @@ function App() {
     }
   };
 
+  const handleVideoEnd = () => {
+    // Close the video player and update watched videos on video end
+    setCurrentVideoUrl(null);
+  };
+
   const closeVideoPlayer = () => {
     setCurrentVideoUrl(null); // Close the video player
   };
@@ -95,8 +100,14 @@ function App() {
     <div>
       <h1>Hod1</h1>
       <PointsBalance points={points} />
-      <VideoList watchVideo={watchVideo} isVideoWatched={isVideoWatched}/>
-      <VideoPlayer videoUrl={currentVideoUrl} onClose={closeVideoPlayer} />
+      <VideoList watchVideo={watchVideo} isVideoWatched={isVideoWatched} />
+      {currentVideoUrl && (
+        <VideoPlayer
+          videoUrl={currentVideoUrl}
+          onVideoEnd={handleVideoEnd}
+          onClose={closeVideoPlayer}
+        />
+      )}
     </div>
   );
 }

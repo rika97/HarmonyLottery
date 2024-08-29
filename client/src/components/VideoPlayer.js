@@ -1,59 +1,31 @@
-import React, { useRef, useState } from 'react';
-import YouTube from 'react-youtube';
+import React, { useState } from 'react';
+import ReactPlayer from 'react-player';
 
-const VideoPlayer = ({ videoId, onWatched, threshold = 0.9 }) => {
-  const playerRef = useRef(null);
-  const [watchedDuration, setWatchedDuration] = useState(0);
-  const [videoDuration, setVideoDuration] = useState(0);
+const VideoPlayer = ({ videoUrl, onVideoEnd, threshold = 0.9 }) => {
+  const [playedSeconds, setPlayedSeconds] = useState(0);
+  const [duration, setDuration] = useState(0);
 
-  const onReady = (event) => {
-    playerRef.current = event.target;
-    setVideoDuration(playerRef.current.getDuration());
-  };
+  const handleProgress = (progress) => {
+    setPlayedSeconds(progress.playedSeconds);
+    setDuration(progress.loadedDuration || duration);
 
-  const onStateChange = (event) => {
-    if (event.data === YouTube.PlayerState.PLAYING) {
-      const intervalId = setInterval(() => {
-        if (playerRef.current) {
-          setWatchedDuration(playerRef.current.getCurrentTime());
-        }
-      }, 1000);
-
-      playerRef.current.intervalId = intervalId;
-    } else if (
-      event.data === YouTube.PlayerState.PAUSED ||
-      event.data === YouTube.PlayerState.ENDED
-    ) {
-      clearInterval(playerRef.current.intervalId);
-    }
-
-    if (event.data === YouTube.PlayerState.ENDED) {
-      const watchedPercentage = watchedDuration / videoDuration;
-
-      if (watchedPercentage >= threshold) {
-        onWatched();
-      } else {
-        alert(
-          `You need to watch at least ${
-            threshold * 100
-          }% of the video to earn points.`
-        );
-      }
+    if (playedSeconds / duration >= threshold) {
+      onVideoEnd();
     }
   };
 
   return (
-    <YouTube
-      videoId={videoId}
-      onReady={onReady}
-      onStateChange={onStateChange}
-      opts={{
-        playerVars: {
-          autoplay: 1,
-          controls: 1,
-        },
-      }}
-    />
+    <div className="video-player">
+      <ReactPlayer
+        url={videoUrl}
+        controls
+        playing
+        onProgress={handleProgress}
+        onEnded={onVideoEnd}
+        width="100%"
+        height="100%"
+      />
+    </div>
   );
 };
 
