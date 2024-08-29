@@ -46,6 +46,7 @@ const VideoList = ({ watchVideo, isVideoWatched }) => {
                   variant="contained"
                   color="primary"
                   onClick={() => watchVideo(video.id, video.url)}
+                  sx={{ backgroundColor: '#07aee9', ':hover': { backgroundColor: '#0597d0' }}}
                   fullWidth
                 >
                   Watch
