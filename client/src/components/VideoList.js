@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button, Card, CardContent, Typography, Grid } from '@mui/material';
 
 const videos = [
     { id: 1, title: "The Defiant: The Case for DeFi", url: 'https://youtu.be/dnefSfsngI8?si=BALy5OoiJBhHbbls', points: 100 },
@@ -34,18 +35,30 @@ const VideoList = ({ watchVideo, isVideoWatched }) => {
   const unwatchedVideos = videos.filter(video => !isVideoWatched(video.id));
 
   return (
-    <div>
+    <Grid container spacing={2}>
       {unwatchedVideos.length > 0 ? (
         unwatchedVideos.map(video => (
-          <div key={video.id}>
-            <h3>{video.title}</h3>
-            <button onClick={() => watchVideo(video.id, video.url)}>Watch</button>
-          </div>
+          <Grid item xs={12} sm={6} md={4} key={video.id}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6">{video.title}</Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => watchVideo(video.id, video.url)}
+                  sx={{ backgroundColor: '#07aee9', ':hover': { backgroundColor: '#0597d0' }}}
+                  fullWidth
+                >
+                  Watch
+                </Button>
+              </CardContent>
+            </Card>
+          </Grid>
         ))
       ) : (
-        <p>No videos left to watch!</p>
+        <Typography variant="h6">No videos left to watch!</Typography>
       )}
-    </div>
+    </Grid>
   );
 };
 
