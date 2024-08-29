@@ -9,9 +9,10 @@ const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 })
     setPlayedSeconds(progress.playedSeconds);
     setDuration(progress.loadedDuration || duration);
 
-    if (duration > 0 && playedSeconds / duration >= threshold) {
-      onThresholdReached();
-    }
+    onThresholdReached();
+    // if (duration > 0 && playedSeconds / duration >= threshold) {
+    //   onThresholdReached();
+    // }
   };
 
   return (
