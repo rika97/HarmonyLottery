@@ -7,6 +7,7 @@ function App() {
   const [points, setPoints] = useState(0);
   const [watchedVideos, setWatchedVideos] = useState(new Set());
   const [currentVideoUrl, setCurrentVideoUrl] = useState(null);
+  const [currentVideoId, setCurrentVideoId] = useState(null);
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
@@ -54,29 +55,10 @@ function App() {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response.json();
 
-        setPoints(data.points);
-        setWatchedVideos((prev) => {
-          const newWatchedVideos = new Set(prev);
-          newWatchedVideos.add(videoId);
-
-          fetch('https://hod1-a52bc53a961e.herokuapp.com/updateWatchedVideos', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ userId, videoId }),
-          })
-            .then((res) => res.json())
-            .then((result) => console.log(result.message))
-            .catch((error) => console.error('Error updating watched videos:', error));
-
-          return newWatchedVideos;
-        });
-
-        // Set the video URL to open the player
+        // Set the video URL and ID to open the player
         setCurrentVideoUrl(videoUrl);
+        setCurrentVideoId(videoId);
       } else {
         console.error('Telegram WebApp is not available.');
       }
@@ -85,13 +67,46 @@ function App() {
     }
   };
 
-  const handleVideoEnd = () => {
-    // Close the video player and update watched videos on video end
-    setCurrentVideoUrl(null);
+  const handleThresholdReached = async () => {
+    try {
+      if (window.Telegram && window.Telegram.WebApp) {
+        const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
+        const response = await fetch(`https://hod1-a52bc53a961e.herokuapp.com/complete?userId=${userId}&videoId=${currentVideoId}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+
+        setPoints(data.points);
+        setWatchedVideos((prev) => {
+          const newWatchedVideos = new Set(prev);
+          newWatchedVideos.add(currentVideoId);
+
+          fetch('https://hod1-a52bc53a961e.herokuapp.com/updateWatchedVideos', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId, videoId: currentVideoId }),
+          })
+            .then((res) => res.json())
+            .then((result) => console.log(result.message))
+            .catch((error) => console.error('Error updating watched videos:', error));
+
+          return newWatchedVideos;
+        });
+      }
+    } catch (error) {
+      console.error('Error completing video:', error);
+    } finally {
+      setCurrentVideoUrl(null);
+      setCurrentVideoId(null);
+    }
   };
 
   const closeVideoPlayer = () => {
-    setCurrentVideoUrl(null); // Close the video player
+    setCurrentVideoUrl(null);
+    setCurrentVideoId(null);
   };
 
   const isVideoWatched = (videoId) => watchedVideos.has(videoId);
@@ -104,7 +119,7 @@ function App() {
       {currentVideoUrl && (
         <VideoPlayer
           videoUrl={currentVideoUrl}
-          onVideoEnd={handleVideoEnd}
+          onThresholdReached={handleThresholdReached}
           onClose={closeVideoPlayer}
         />
       )}
