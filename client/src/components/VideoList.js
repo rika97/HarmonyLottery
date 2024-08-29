@@ -39,7 +39,7 @@ const VideoList = ({ watchVideo, isVideoWatched }) => {
         unwatchedVideos.map(video => (
           <div key={video.id}>
             <h3>{video.title}</h3>
-            <button onClick={() => watchVideo(video.id)}>Watch</button>
+            <button onClick={() => watchVideo(video.id, video.url)}>Watch</button>
           </div>
         ))
       ) : (

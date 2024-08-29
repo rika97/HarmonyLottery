@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import VideoList from './components/VideoList';
+import VideoPlayer from './components/VideoPlayer';
 import PointsBalance from './components/PointsBalance';
 
 function App() {
   const [points, setPoints] = useState(0);
   const [watchedVideos, setWatchedVideos] = useState(new Set());
+  const [currentVideoUrl, setCurrentVideoUrl] = useState(null);
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
@@ -44,7 +46,7 @@ function App() {
     }
   };
 
-  const watchVideo = async (videoId) => {
+  const watchVideo = async (videoId, videoUrl) => {
     try {
       if (window.Telegram && window.Telegram.WebApp) {
         const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
@@ -55,7 +57,7 @@ function App() {
         const data = await response.json();
 
         setPoints(data.points);
-        setWatchedVideos(prev => {
+        setWatchedVideos((prev) => {
           const newWatchedVideos = new Set(prev);
           newWatchedVideos.add(videoId);
 
@@ -65,18 +67,26 @@ function App() {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({ userId, videoId }),
-          }).then(res => res.json())
-            .then(result => console.log(result.message))
-            .catch(error => console.error('Error updating watched videos:', error));
-            
+          })
+            .then((res) => res.json())
+            .then((result) => console.log(result.message))
+            .catch((error) => console.error('Error updating watched videos:', error));
+
           return newWatchedVideos;
         });
+
+        // Set the video URL to open the player
+        setCurrentVideoUrl(videoUrl);
       } else {
         console.error('Telegram WebApp is not available.');
       }
     } catch (error) {
       console.error('Error watching video:', error);
     }
+  };
+
+  const closeVideoPlayer = () => {
+    setCurrentVideoUrl(null); // Close the video player
   };
 
   const isVideoWatched = (videoId) => watchedVideos.has(videoId);
@@ -86,6 +96,7 @@ function App() {
       <h1>Hod1</h1>
       <PointsBalance points={points} />
       <VideoList watchVideo={watchVideo} isVideoWatched={isVideoWatched}/>
+      <VideoPlayer videoUrl={currentVideoUrl} onClose={closeVideoPlayer} />
     </div>
   );
 }
