@@ -47,24 +47,9 @@ function App() {
     }
   };
 
-  const watchVideo = async (videoId, videoUrl) => {
-    try {
-      if (window.Telegram && window.Telegram.WebApp) {
-        const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
-        const response = await fetch(`https://hod1-a52bc53a961e.herokuapp.com/watch?userId=${userId}&videoId=${videoId}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        // Set the video URL and ID to open the player
-        setCurrentVideoUrl(videoUrl);
-        setCurrentVideoId(videoId);
-      } else {
-        console.error('Telegram WebApp is not available.');
-      }
-    } catch (error) {
-      console.error('Error watching video:', error);
-    }
+  const watchVideo = (videoId, videoUrl) => {
+    setCurrentVideoUrl(videoUrl);
+    setCurrentVideoId(videoId);
   };
 
   const handleThresholdReached = async () => {
@@ -99,14 +84,15 @@ function App() {
     } catch (error) {
       console.error('Error completing video:', error);
     } finally {
+      // Close the video player after handling threshold
       setCurrentVideoUrl(null);
       setCurrentVideoId(null);
     }
   };
 
   const closeVideoPlayer = () => {
-    setCurrentVideoUrl(null);
-    setCurrentVideoId(null);
+    setCurrentVideoUrl(null); // Close the video player
+    setCurrentVideoId(null); // Clear the current video ID
   };
 
   const isVideoWatched = (videoId) => watchedVideos.has(videoId);
