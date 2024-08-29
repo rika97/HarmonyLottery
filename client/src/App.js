@@ -58,7 +58,7 @@ function App() {
     try {
       if (window.Telegram && window.Telegram.WebApp) {
         const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
-        const response = await fetch(`https://hod1-a52bc53a961e.herokuapp.com/complete?userId=${userId}&videoId=${currentVideoId}`);
+        const response = await fetch(`https://hod1-a52bc53a961e.herokuapp.com/watch?userId=${userId}&videoId=${currentVideoId}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
