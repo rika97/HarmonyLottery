@@ -3,6 +3,7 @@ import { Typography } from '@mui/material';
 
 const Home = () => {
   const [points, setPoints] = useState(0);
+  const [initusercalled, setInitusercalled] = useState(false);
 
   const initializeUser = useCallback(async (userId) => {
     try {
@@ -12,6 +13,7 @@ const Home = () => {
       if (data.points === undefined) {
         await fetch(`https://hod1-a52bc53a961e.herokuapp.com/initializeUser?userId=${userId}`, { method: 'POST' });
         fetchPoints(userId);
+        setInitusercalled(true);
       } else {
         setPoints(data.points);
       }
@@ -39,7 +41,7 @@ const Home = () => {
     }
   };
 
-  return <Typography variant="h6">Points: {points} NIL</Typography>;
+  return <Typography variant="h6">Points: {points} NIL, inituser?: {initusercalled}</Typography>;
 };
 
 export default Home;
