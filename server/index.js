@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 5001;
 
 const botToken = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new TelegramBot(botToken, { polling: true });
-const youtubeApiKey = process.env.YOUTUBE_API_KEY;
+// const youtubeApiKey = process.env.YOUTUBE_API_KEY;
 
 app.use(cors({
     origin: 'https://hod1.netlify.app',
@@ -19,6 +19,8 @@ app.use(cors({
   }));
 app.use(express.json());
 
+
+// API
 const userPoints = {};
 const videos = [
     { id: 1, title: "The Defiant: The Case for DeFi", url: 'https://youtu.be/dnefSfsngI8?si=BALy5OoiJBhHbbls', points: 100 },
@@ -100,36 +102,38 @@ app.post('/updateWatchedVideos', (req, res) => {
   res.status(200).json({ message: 'Watched video updated' });
 });
 
-app.get('/youtube/viewcount', async (req, res) => {
-  const { url } = req.query;
 
-  const videoIdMatch = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
 
-  if (!videoIdMatch) {
-      return res.status(400).json({ error: 'Invalid YouTube URL' });
-  }
+// app.get('/youtube/viewcount', async (req, res) => {
+//   const { url } = req.query;
 
-  const videoId = videoIdMatch[1];
+//   const videoIdMatch = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
 
-  try {
-      const response = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoId}&key=${youtubeApiKey}`);
+//   if (!videoIdMatch) {
+//       return res.status(400).json({ error: 'Invalid YouTube URL' });
+//   }
 
-      console.log('YouTube API response:', response.data);
+//   const videoId = videoIdMatch[1];
 
-      const statistics = response.data.items[0]?.statistics;
+//   try {
+//       const response = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoId}&key=${youtubeApiKey}`);
 
-      if (!statistics) {
-        throw new Error('No statistics found for the video');
-      }
+//       console.log('YouTube API response:', response.data);
 
-      res.json({
-          viewCount: statistics.viewCount
-      });
-  } catch (error) {
-      console.error('Error fetching YouTube video statistics:', error);
-      res.status(500).json({ error: 'Failed to fetch video statistics' });
-  }
-});
+//       const statistics = response.data.items[0]?.statistics;
+
+//       if (!statistics) {
+//         throw new Error('No statistics found for the video');
+//       }
+
+//       res.json({
+//           viewCount: statistics.viewCount
+//       });
+//   } catch (error) {
+//       console.error('Error fetching YouTube video statistics:', error);
+//       res.status(500).json({ error: 'Failed to fetch video statistics' });
+//   }
+// });
 
 
 
@@ -143,6 +147,8 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
+
+// BOT
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
   const frontendUrl = 'https://t.me/HarmonySocialBot/hod1app';
