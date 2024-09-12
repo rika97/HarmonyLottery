@@ -7,31 +7,17 @@ const Home = () => {
   useEffect(() => {
     const initializeUser = async (userId) => {
       try {
-        console.log(`Initializing user with ID: ${userId}`);
         const response = await fetch(`https://hod1-a52bc53a961e.herokuapp.com/points?userId=${userId}`);
         const data = await response.json();
-        console.log('Fetched points:', data);
 
         if (data.points === undefined) {
-          console.log('Points undefined, initializing user.');
           await fetch(`https://hod1-a52bc53a961e.herokuapp.com/initializeUser?userId=${userId}`, { method: 'POST' });
-          fetchPoints(userId);
+          setPoints(0);
         } else {
           setPoints(data.points);
         }
       } catch (error) {
         console.error('Error initializing user:', error);
-      }
-    };
-
-    const fetchPoints = async (userId) => {
-      try {
-        const response = await fetch(`https://hod1-a52bc53a961e.herokuapp.com/points?userId=${userId}`);
-        const data = await response.json();
-        console.log('Fetched points after initialization:', data);
-        setPoints(data.points);
-      } catch (error) {
-        console.error('Error fetching points:', error);
       }
     };
 

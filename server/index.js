@@ -68,7 +68,7 @@ app.post('/initializeUser', (req, res) => {
 
 app.get('/points', (req, res) => {
   const userId = req.query.userId;
-  const points = userPoints[userId]?.points || 0;
+  const points = userPoints[userId]?.points;
   res.json({ points });
 });
 
