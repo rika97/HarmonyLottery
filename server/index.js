@@ -58,6 +58,15 @@ app.get('/points', (req, res) => {
   res.json({ points });
 });
 
+app.get('/leaderboard', (req, res) => {
+  const sortedUsers = Object.entries(userPoints)
+    .map(([userId, data]) => ({ userId, points: data.points }))
+    .sort((a, b) => b.points - a.points);
+
+  res.json(sortedUsers);
+});
+
+
 app.get('/watch', (req, res) => {
   const { userId, videoId } = req.query;
 
