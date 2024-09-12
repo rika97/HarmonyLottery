@@ -39,20 +39,27 @@ const Leaderboard = () => {
       <Typography variant="h4">Leaderboard</Typography>
       {telegramAvailable ? (
         <List>
-          {leaderboard.map((user, index) => (
+          {leaderboard.slice(0, 30).map((user, index) => (
             <ListItem
               key={user.userId}
               style={{
+                display: 'flex',
+                justifyContent: 'space-between',
                 backgroundColor: isCurrentUser(user.userId) ? '#e0f7fa' : 'inherit',
                 borderRadius: '4px',
+                padding: '8px',
               }}
             >
               <ListItemAvatar>
-                <Avatar>{index + 1}</Avatar>
+                <Avatar style={{ width: 24, height: 24, fontSize: '14px' }}>
+                  {index + 1}
+                </Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary={`#${index + 1} User ID: ${user.userId}`}
-                secondary={`Points: ${user.points}`}
+                primary={`Points: ${user.points}`}
+                secondary={`User ID: ${user.userId}`}
+                primaryTypographyProps={{ style: { fontSize: '16px', color: 'black' } }}
+                secondaryTypographyProps={{ style: { fontSize: '12px' } }}
               />
             </ListItem>
           ))}
