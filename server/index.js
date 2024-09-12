@@ -52,6 +52,20 @@ const videos = [
     { id: 27, title: "DeFi 101: Risks, Top Resources, Adoption, Gas Fees, The Future", url: 'https://youtu.be/YhEtaR2dRDw?si=HYfvfPlr25g36eA-', points: 100 }
 ];
 
+app.post('/initializeUser', (req, res) => {
+  const { userId } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({ error: 'Invalid user ID' });
+  }
+
+  if (!userPoints[userId]) {
+    userPoints[userId] = { points: 0, watchedVideos: [] };
+  }
+
+  res.status(200).json({ message: 'User initialized' });
+});
+
 app.get('/points', (req, res) => {
   const userId = req.query.userId;
   const points = userPoints[userId]?.points || 0;
@@ -160,12 +174,7 @@ app.listen(PORT, () => {
 // BOT
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
-  const userId = msg.from.id;
 
-  if (!userPoints[userId]) {
-    userPoints[userId] = { points: 0, watchedVideos: [] };
-  }
-  
   const frontendUrl = 'https://t.me/HarmonySocialBot/hod1app';
 
   bot.sendMessage(chatId, 'Welcome! Click the link below to get started:', {
