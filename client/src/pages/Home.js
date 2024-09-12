@@ -14,7 +14,7 @@ const Home = () => {
 
         if (data.points === undefined) {
           console.log('Points undefined, initializing user.');
-          await fetch(`https://hod1-a52bc53a961e.herokuapp.com/initUser?userId=${userId}`, { method: 'POST' });
+          await fetch(`https://hod1-a52bc53a961e.herokuapp.com/initializeUser?userId=${userId}`, { method: 'POST' });
           fetchPoints(userId);
         } else {
           setPoints(data.points);
