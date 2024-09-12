@@ -4,6 +4,7 @@ import { Container, Typography, Box, AppBar, Toolbar, Button } from '@mui/materi
 
 import Home from './pages/Home';
 import Tasks from './pages/Tasks';
+import Leaderboard from './pages/Leaderboard';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Toolbar>
           <Button color="inherit" component={Link} to="/">Home</Button>
           <Button color="inherit" component={Link} to="/tasks">Tasks</Button>
+          <Button color="inherit" component={Link} to="/leaderboard">Leaderboard</Button>
         </Toolbar>
       </AppBar>
       
@@ -23,6 +25,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/tasks" element={<Tasks />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
           </Routes>
         </Box>
       </Container>

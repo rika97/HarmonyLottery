@@ -4,8 +4,8 @@ import { Typography } from '@mui/material';
 const Leaderboard = () => {
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
-      const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
-      fetchPoints(userId);
+    //   const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
+      console.log("cool")
     } else {
       console.error('Telegram WebApp is not available.');
     }
