@@ -160,6 +160,12 @@ app.listen(PORT, () => {
 // BOT
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
+  const userId = msg.from.id;
+
+  if (!userPoints[userId]) {
+    userPoints[userId] = { points: 0, watchedVideos: [] };
+  }
+  
   const frontendUrl = 'https://t.me/HarmonySocialBot/hod1app';
 
   bot.sendMessage(chatId, 'Welcome! Click the link below to get started:', {
