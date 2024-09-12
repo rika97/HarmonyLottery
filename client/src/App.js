@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Container, Typography, Box, AppBar, Toolbar, Button } from '@mui/material';
 
 import Home from './pages/Home';
-import Watch from './pages/Watch';
+import Tasks from './pages/Tasks';
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
       <AppBar position="static">
         <Toolbar>
           <Button color="inherit" component={Link} to="/">Home</Button>
-          <Button color="inherit" component={Link} to="/watch">Watch</Button>
+          <Button color="inherit" component={Link} to="/tasks">Tasks</Button>
         </Toolbar>
       </AppBar>
       
@@ -22,7 +22,7 @@ function App() {
           </Typography>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/watch" element={<Watch />} />
+            <Route path="/tasks" element={<Tasks />} />
           </Routes>
         </Box>
       </Container>

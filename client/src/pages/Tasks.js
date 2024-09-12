@@ -3,7 +3,7 @@ import { Container, Paper, Box } from '@mui/material';
 import VideoList from '../components/VideoList';
 import VideoPlayer from '../components/VideoPlayer';
 
-const Watch = () => {
+const Tasks = () => {
   const [watchedVideos, setWatchedVideos] = useState(new Set());
   const [currentVideoUrl, setCurrentVideoUrl] = useState(null);
   const [currentVideoId, setCurrentVideoId] = useState(null);
@@ -93,4 +93,4 @@ const Watch = () => {
   );
 };
 
-export default Watch;
+export default Tasks;

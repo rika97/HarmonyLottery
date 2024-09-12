@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import ReactPlayer from 'react-player';
 
-const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.9 }) => {
+const VideoPlayer = ({ videoUrl, onThresholdReached, onClose, threshold = 0.85 }) => {
   const [playedSeconds, setPlayedSeconds] = React.useState(0);
   const [duration, setDuration] = React.useState(0);
   const [watchTime, setWatchTime] = React.useState(0);
