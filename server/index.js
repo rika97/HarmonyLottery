@@ -61,9 +61,15 @@ app.post('/initializeUser', (req, res) => {
 
   if (!userPoints[userId]) {
     userPoints[userId] = { points: 0, watchedVideos: [] };
+    console.log("userpoints initialized")
+  } else {
+    console.log("userpoints already existed: ", userPoints)
   }
-
   res.status(200).json({ message: 'User initialized' });
+});
+
+app.get('/userpoints', (req, res) => {
+  res.json({ userPoints });
 });
 
 app.get('/points', (req, res) => {
