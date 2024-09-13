@@ -24,8 +24,8 @@ const Leaderboard = () => {
         const data = await response.json();
         setLeaderboard(data);
 
-        const rank = data.findIndex(user => user.userId === currentUser) + 1;
-        setCurrentUserRank(rank);
+        const rank = data.findIndex(user => user.userId === currentUser);
+        setCurrentUserRank(rank >= 0 ? rank + 1 : null);
       } catch (error) {
         console.error('Error fetching leaderboard:', error);
       }
@@ -45,7 +45,7 @@ const Leaderboard = () => {
         <div>
           {currentUserRank !== null && (
             <Typography variant="h6">
-              {`Your Ranking: #${currentUserRank}`}
+              {`Current User Ranking: #${currentUserRank}`}
             </Typography>
           )}
           <TableContainer component={Paper}>
