@@ -24,7 +24,7 @@ const Leaderboard = () => {
         const data = await response.json();
         setLeaderboard(data);
 
-        const rank = data.findIndex(user => user.userId === currentUser);
+        const rank = data.findIndex(user => String(user.userId) === String(currentUser));
         setCurrentUserRank(rank >= 0 ? rank + 1 : null);
       } catch (error) {
         console.error('Error fetching leaderboard:', error);
