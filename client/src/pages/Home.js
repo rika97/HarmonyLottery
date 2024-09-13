@@ -46,6 +46,7 @@ const Home = () => {
           <Link href={referralUrl} target="_blank" rel="noopener noreferrer">
             {referralUrl}
           </Link>
+          (When a new user joins, +1000 NIL)
         </Typography>
       )}
     </div>
