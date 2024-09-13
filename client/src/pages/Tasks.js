@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Paper, Box, Typography } from '@mui/material';
+import { Container, Paper, Box, Typography, Tabs, Tab } from '@mui/material';
 import VideoList from '../components/VideoList';
 import VideoPlayer from '../components/VideoPlayer';
 
@@ -7,6 +7,7 @@ const Tasks = () => {
   const [watchedVideos, setWatchedVideos] = useState(new Set());
   const [currentVideoUrl, setCurrentVideoUrl] = useState(null);
   const [currentVideoId, setCurrentVideoId] = useState(null);
+  const [selectedTab, setSelectedTab] = useState(0);
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
@@ -43,7 +44,6 @@ const Tasks = () => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        // const data = await response.json();
 
         setWatchedVideos((prev) => {
           const newWatchedVideos = new Set(prev);
@@ -75,20 +75,35 @@ const Tasks = () => {
 
   const isVideoWatched = (videoId) => watchedVideos.has(videoId);
 
+  const handleTabChange = (event, newValue) => {
+    setSelectedTab(newValue);
+  };
+
   return (
     <Container maxWidth="sm">
-      <Typography variant="h4">Tasks</Typography>
+      <Typography variant="h4" gutterBottom>Tasks</Typography>
+      <Tabs value={selectedTab} onChange={handleTabChange} centered>
+        <Tab label="Video List" />
+        <Tab label="Other Component" />
+      </Tabs>
       <Box textAlign="center" my={4}>
         <Paper elevation={3} sx={{ padding: 2 }}>
-          <VideoList watchVideo={watchVideo} isVideoWatched={isVideoWatched} />
+          {selectedTab === 0 && (
+            <>
+              <VideoList watchVideo={watchVideo} isVideoWatched={isVideoWatched} />
+              {currentVideoUrl && (
+                <VideoPlayer
+                  videoUrl={currentVideoUrl}
+                  onThresholdReached={handleThresholdReached}
+                  onClose={closeVideoPlayer}
+                />
+              )}
+            </>
+          )}
+          {selectedTab === 1 && (
+            <Typography variant="h6">Other component</Typography>
+          )}
         </Paper>
-        {currentVideoUrl && (
-          <VideoPlayer
-            videoUrl={currentVideoUrl}
-            onThresholdReached={handleThresholdReached}
-            onClose={closeVideoPlayer}
-          />
-        )}
       </Box>
     </Container>
   );
