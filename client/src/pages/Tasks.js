@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Paper, Box } from '@mui/material';
+import { Container, Paper, Box, Typography } from '@mui/material';
 import VideoList from '../components/VideoList';
 import VideoPlayer from '../components/VideoPlayer';
 
