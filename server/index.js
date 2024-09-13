@@ -22,6 +22,8 @@ app.use(express.json());
 
 // API
 const userPoints = {};
+userPoints["test"] = { points: 0, watchedVideos: [] }; // test user
+
 const videos = [
     { id: 1, title: "The Defiant: The Case for DeFi", url: 'https://youtu.be/dnefSfsngI8?si=BALy5OoiJBhHbbls', points: 100 },
     { id: 2, title: "FREE tokens for $ONE holders (not clickbait) - Stafi Protocol", url: 'https://youtu.be/s8Qv76ta4QI?si=E0tYf9Pq3y5lF31S', points: 100 },
@@ -67,6 +69,29 @@ app.post('/initializeUser', (req, res) => {
   }
   res.status(200).json({ message: 'User initialized' });
 });
+
+
+app.post('/registerWithReferral', (req, res) => {
+  const { userId, referralId } = req.body;
+
+  if (!userId || !referralId) {
+    return res.status(400).json({ error: 'Invalid user ID or referral ID' });
+  }
+
+  if (!userPoints[referralId]) {
+    return res.status(400).json({ error: `Invalid referral code: ${referralId}` });
+  }
+
+  if (userPoints[userId]) {
+    return res.status(400).json({ error: 'User already registered' });
+  }
+
+  userPoints[userId] = { points: 1000, watchedVideos: [] };
+  userPoints[referralId].points += 1000;
+  res.status(200).json({ message: 'You have been registered with a referral! Both you and the referrer have received 1000 points.' });
+});
+
+
 
 app.get('/userpoints', (req, res) => {
   res.json({ userPoints });
@@ -178,16 +203,34 @@ app.listen(PORT, () => {
 
 
 // BOT
-bot.onText(/\/start/, (msg) => {
+bot.onText(/\/start(?:\s+(.+))?/, async (msg, match) => {
   const chatId = msg.chat.id;
-
-  const frontendUrl = 'https://t.me/HarmonySocialBot/hod1app';
-
-  bot.sendMessage(chatId, 'Welcome! Click the link below to get started:', {
-    reply_markup: {
-      inline_keyboard: [[
-        { text: 'Open Hod1', url: frontendUrl }
-      ]]
+  const referralId = match[1];
+  const userId = chatId.toString();
+  
+  try {
+    if (referralId) {
+      const response = await axios.post('https://hod1-a52bc53a961e.herokuapp.com/registerWithReferral', { userId, referralId });
+      
+      if (response.status === 200) {
+        bot.sendMessage(chatId, 'You have been registered with a referral! Both you and the referrer have received 1000 points.');
+      } else {
+        bot.sendMessage(chatId, `Referral registration failed: ${response.data.error}`);
+      }
+    } else {
+      bot.sendMessage(chatId, 'Welcome! Click the link below to get started:', {
+        reply_markup: {
+          inline_keyboard: [[
+            { text: 'Open Hod1', url: 'https://t.me/HarmonySocialBot/hod1app' }
+          ]]
+        }
+      });
     }
-  });
+  } catch (error) {
+    const errorMessage = error.response?.data?.error || 'An error occurred while processing your request. Please try again later.';
+    console.error('Error handling /start command:', error.response ? error.response.data : error.message);
+    bot.sendMessage(chatId, errorMessage);
+  }
 });
+
+

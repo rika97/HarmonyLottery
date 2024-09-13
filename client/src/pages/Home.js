@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Typography } from '@mui/material';
+import { Typography, Link } from '@mui/material';
 
 const Home = () => {
   const [points, setPoints] = useState(0);
+  const [referralUrl, setReferralUrl] = useState('');
 
   useEffect(() => {
     const initializeUser = async (userId) => {
@@ -20,6 +21,9 @@ const Home = () => {
         } else {
           setPoints(pointsData.points);
         }
+
+        setReferralUrl(`https://t.me/HarmonySocialBot?start=${userId}`);
+
       } catch (error) {
         console.error('Error initializing user:', error);
       }
@@ -33,7 +37,19 @@ const Home = () => {
     }
   }, []);
 
-  return <Typography variant="h6">Points: {points} NIL</Typography>;
+  return (
+    <div>
+      <Typography variant="h6">Points: {points} NIL</Typography>
+      {referralUrl && (
+        <Typography variant="body1">
+          Share your referral link: 
+          <Link href={referralUrl} target="_blank" rel="noopener noreferrer">
+            {referralUrl}
+          </Link>
+        </Typography>
+      )}
+    </div>
+  );
 };
 
 export default Home;

@@ -77,7 +77,7 @@ const Tasks = () => {
 
   return (
     <Container maxWidth="sm">
-      <Typography variant="h4">Leaderboard</Typography>
+      <Typography variant="h4">Tasks</Typography>
       <Box textAlign="center" my={4}>
         <Paper elevation={3} sx={{ padding: 2 }}>
           <VideoList watchVideo={watchVideo} isVideoWatched={isVideoWatched} />
