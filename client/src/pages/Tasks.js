@@ -83,8 +83,8 @@ const Tasks = () => {
     <Container maxWidth="sm">
       <Typography variant="h4" gutterBottom>Tasks</Typography>
       <Tabs value={selectedTab} onChange={handleTabChange} centered>
-        <Tab label="Video List" />
-        <Tab label="Other Component" />
+        <Tab label="Cinema" />
+        <Tab label="Socials" />
       </Tabs>
       <Box textAlign="center" my={4}>
         <Paper elevation={3} sx={{ padding: 2 }}>
@@ -101,7 +101,7 @@ const Tasks = () => {
             </>
           )}
           {selectedTab === 1 && (
-            <Typography variant="h6">Other component</Typography>
+            <Typography variant="h6">Subscribe to YouTube</Typography>
           )}
         </Paper>
       </Box>
