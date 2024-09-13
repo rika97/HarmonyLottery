@@ -14,17 +14,14 @@ function App() {
     <Router>
       <AppBar position="static">
         <Toolbar>
-          <Button color="inherit" component={Link} to="/">Home</Button>
-          <Button color="inherit" component={Link} to="/tasks">Tasks</Button>
-          <Button color="inherit" component={Link} to="/leaderboard">Leaderboard</Button>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Hod1
+          </Typography>
         </Toolbar>
       </AppBar>
       
       <Container maxWidth="sm">
         <Box textAlign="center" my={4}>
-          <Typography variant="h3" gutterBottom>
-            Hod1
-          </Typography>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/tasks" element={<Tasks />} />
