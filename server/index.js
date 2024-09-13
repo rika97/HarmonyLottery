@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 5001;
 
 const botToken = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new TelegramBot(botToken, { polling: true });
-const youtubeApiKey = process.env.YOUTUBE_API_KEY;
+// const youtubeApiKey = process.env.YOUTUBE_API_KEY;
 
 app.use(cors({
     origin: 'https://hod1.netlify.app',
@@ -19,7 +19,11 @@ app.use(cors({
   }));
 app.use(express.json());
 
+
+// API
 const userPoints = {};
+userPoints["test"] = { points: 0, watchedVideos: [] }; // test user
+
 const videos = [
     { id: 1, title: "The Defiant: The Case for DeFi", url: 'https://youtu.be/dnefSfsngI8?si=BALy5OoiJBhHbbls', points: 100 },
     { id: 2, title: "FREE tokens for $ONE holders (not clickbait) - Stafi Protocol", url: 'https://youtu.be/s8Qv76ta4QI?si=E0tYf9Pq3y5lF31S', points: 100 },
@@ -50,11 +54,63 @@ const videos = [
     { id: 27, title: "DeFi 101: Risks, Top Resources, Adoption, Gas Fees, The Future", url: 'https://youtu.be/YhEtaR2dRDw?si=HYfvfPlr25g36eA-', points: 100 }
 ];
 
+app.post('/initializeUser', (req, res) => {
+  const { userId } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({ error: 'Invalid user ID' });
+  }
+
+  if (!userPoints[userId]) {
+    userPoints[userId] = { points: 0, watchedVideos: [] };
+    console.log("userpoints initialized")
+  } else {
+    console.log("userpoints already existed: ", userPoints)
+  }
+  res.status(200).json({ message: 'User initialized' });
+});
+
+
+app.post('/registerWithReferral', (req, res) => {
+  const { userId, referralId } = req.body;
+
+  if (!userId || !referralId) {
+    return res.status(400).json({ error: 'Invalid user ID or referral ID' });
+  }
+
+  if (!userPoints[referralId]) {
+    return res.status(400).json({ error: `Invalid referral code: ${referralId}` });
+  }
+
+  if (userPoints[userId]) {
+    return res.status(400).json({ error: 'User already registered' });
+  }
+
+  userPoints[userId] = { points: 1000, watchedVideos: [] };
+  userPoints[referralId].points += 1000;
+  res.status(200).json({ message: 'You have been registered with a referral! Both you and the referrer have received 1000 points.' });
+});
+
+
+
+app.get('/userpoints', (req, res) => {
+  res.json({ userPoints });
+});
+
 app.get('/points', (req, res) => {
   const userId = req.query.userId;
-  const points = userPoints[userId]?.points || 0;
+  const points = userPoints[userId]?.points;
   res.json({ points });
 });
+
+app.get('/leaderboard', (req, res) => {
+  const sortedUsers = Object.entries(userPoints)
+    .map(([userId, data]) => ({ userId, points: data.points }))
+    .sort((a, b) => b.points - a.points);
+
+  res.json(sortedUsers);
+});
+
 
 app.get('/watch', (req, res) => {
   const { userId, videoId } = req.query;
@@ -100,36 +156,38 @@ app.post('/updateWatchedVideos', (req, res) => {
   res.status(200).json({ message: 'Watched video updated' });
 });
 
-app.get('/youtube/viewcount', async (req, res) => {
-  const { url } = req.query;
 
-  const videoIdMatch = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
 
-  if (!videoIdMatch) {
-      return res.status(400).json({ error: 'Invalid YouTube URL' });
-  }
+// app.get('/youtube/viewcount', async (req, res) => {
+//   const { url } = req.query;
 
-  const videoId = videoIdMatch[1];
+//   const videoIdMatch = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
 
-  try {
-      const response = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoId}&key=${youtubeApiKey}`);
+//   if (!videoIdMatch) {
+//       return res.status(400).json({ error: 'Invalid YouTube URL' });
+//   }
 
-      console.log('YouTube API response:', response.data);
+//   const videoId = videoIdMatch[1];
 
-      const statistics = response.data.items[0]?.statistics;
+//   try {
+//       const response = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoId}&key=${youtubeApiKey}`);
 
-      if (!statistics) {
-        throw new Error('No statistics found for the video');
-      }
+//       console.log('YouTube API response:', response.data);
 
-      res.json({
-          viewCount: statistics.viewCount
-      });
-  } catch (error) {
-      console.error('Error fetching YouTube video statistics:', error);
-      res.status(500).json({ error: 'Failed to fetch video statistics' });
-  }
-});
+//       const statistics = response.data.items[0]?.statistics;
+
+//       if (!statistics) {
+//         throw new Error('No statistics found for the video');
+//       }
+
+//       res.json({
+//           viewCount: statistics.viewCount
+//       });
+//   } catch (error) {
+//       console.error('Error fetching YouTube video statistics:', error);
+//       res.status(500).json({ error: 'Failed to fetch video statistics' });
+//   }
+// });
 
 
 
@@ -143,15 +201,36 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-bot.onText(/\/start/, (msg) => {
-  const chatId = msg.chat.id;
-  const frontendUrl = 'https://t.me/HarmonyLotteryBot/hod1app';
 
-  bot.sendMessage(chatId, 'Welcome! Click the link below to get started:', {
-    reply_markup: {
-      inline_keyboard: [[
-        { text: 'Open Hod1', url: frontendUrl }
-      ]]
+// BOT
+bot.onText(/\/start(?:\s+(.+))?/, async (msg, match) => {
+  const chatId = msg.chat.id;
+  const referralId = match[1];
+  const userId = chatId.toString();
+  
+  try {
+    if (referralId) {
+      const response = await axios.post('https://hod1-a52bc53a961e.herokuapp.com/registerWithReferral', { userId, referralId });
+      
+      if (response.status === 200) {
+        bot.sendMessage(chatId, 'You have been registered with a referral! Both you and the referrer have received 1000 points.');
+      } else {
+        bot.sendMessage(chatId, `Referral registration failed: ${response.data.error}`);
+      }
+    } else {
+      bot.sendMessage(chatId, 'Welcome! Click the link below to get started:', {
+        reply_markup: {
+          inline_keyboard: [[
+            { text: 'Open Hod1', url: 'https://t.me/HarmonySocialBot/hod1app' }
+          ]]
+        }
+      });
     }
-  });
+  } catch (error) {
+    const errorMessage = error.response?.data?.error || 'An error occurred while processing your request. Please try again later.';
+    console.error('Error handling /start command:', error.response ? error.response.data : error.message);
+    bot.sendMessage(chatId, errorMessage);
+  }
 });
+
+
