@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { Container, Typography, Box, AppBar, Toolbar, Button, BottomNavigation, BottomNavigationAction } from '@mui/material';
+import { Container, Typography, Box, AppBar, Toolbar, BottomNavigation, BottomNavigationAction } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import TaskIcon from '@mui/icons-material/List';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
