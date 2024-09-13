@@ -49,6 +49,7 @@ Production Deploy on Telegram: @HarmonySocialBot
 - [ ] Maybe(?) move the user points to app bar not home.js
 - [ ] Switch leaderboard from updating immediately (sorting takes time), update every hour or so and store it somewhere
 - [ ] Further app improvement on storing data to cache instead of calling API every time
+- [ ] Need to check how to prevent Netlify-side error when trying to reload link
 - [x] Add referral code system
 - [x] Add leaderboard for points
 - [x] **Navigation Improvement**: Enhance the Telegram Mini App UI with navbars and appbars for better navigation.
