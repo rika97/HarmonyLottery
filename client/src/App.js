@@ -40,7 +40,7 @@ const MainContent = () => {
         </Toolbar>
       </AppBar>
       
-      <Container maxWidth="sm">
+      <Container maxWidth="sm" style={{ backgroundColor: '#ffffff' }}>
         <Box textAlign="center" my={4}>
           <Routes>
             <Route path="/" element={<Home />} />
