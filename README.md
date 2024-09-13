@@ -44,8 +44,15 @@ Production Deploy on Telegram: @HarmonySocialBot
 - [x] Fix fastfowarding increasing watch time issue
 - [ ] **UI Update**: Enhance the web UI for better visuals.--TBD
 - [ ] **Video List Management**: Clean up and streamline the video list to allow updates from a single file.
-- [ ] **TMA UI Improvement**: Enhance the Telegram Mini App UI with features such as back buttons and better navigation.
-- [ ] Update bot details (change bot username)
+- [ ] Add YouTube subscribe feature
+- [ ] Reformat structure for 'tasks': currently a little awkward to have videos array inserted to index.js. Want to generalize for social tasks too.
+- [ ] Maybe(?) move the user points to app bar not home.js
+- [ ] Switch leaderboard from updating immediately (sorting takes time), update every hour or so and store it somewhere
+- [ ] Further app improvement on storing data to cache instead of calling API every time
+- [x] Add referral code system
+- [x] Add leaderboard for points
+- [x] **Navigation Improvement**: Enhance the Telegram Mini App UI with navbars and appbars for better navigation.
+- [x] Update bot details (change bot username)
 - [x] Add inline keyboard menu button 'play'
 - [x] Integrate Youtube API
 
