@@ -42,9 +42,6 @@ const MainContent = () => {
       
       <Container maxWidth="sm">
         <Box textAlign="center" my={4}>
-          <Typography variant="h3" gutterBottom>
-            Hod1
-          </Typography>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/tasks" element={<Tasks />} />
