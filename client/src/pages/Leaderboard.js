@@ -45,7 +45,7 @@ const Leaderboard = () => {
         <div>
           {currentUserRank !== null && (
             <Typography variant="h6">
-              {`Current User Ranking: #${currentUserRank}`}
+              {`Your Ranking: #${currentUserRank}`}
             </Typography>
           )}
           <TableContainer component={Paper}>
