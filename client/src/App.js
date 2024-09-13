@@ -9,7 +9,7 @@ import Home from './pages/Home';
 import Tasks from './pages/Tasks';
 import Leaderboard from './pages/Leaderboard';
 
-const App = () => {
+const MainContent = () => {
   const [value, setValue] = useState(0);
   const location = useLocation();
 
@@ -31,7 +31,7 @@ const App = () => {
   }, [location]);
 
   return (
-    <Router>
+    <>
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -70,6 +70,14 @@ const App = () => {
         <BottomNavigationAction label="Tasks" icon={<TaskIcon />} component={Link} to="/tasks" />
         <BottomNavigationAction label="Leaderboard" icon={<LeaderboardIcon />} component={Link} to="/leaderboard" />
       </BottomNavigation>
+    </>
+  );
+};
+
+const App = () => {
+  return (
+    <Router>
+      <MainContent />
     </Router>
   );
 };
