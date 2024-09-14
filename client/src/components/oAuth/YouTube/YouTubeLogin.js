@@ -9,12 +9,12 @@ const YouTubeLogin = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
-
+    
         try {
             const response = await axios.get('https://hod1-a52bc53a961e.herokuapp.com/verify-subscription', {
                 params: { userId: channelId }
             });
-
+    
             setResult(response.data.message);
         } catch (error) {
             setResult('Failed to verify subscription');
@@ -22,6 +22,7 @@ const YouTubeLogin = () => {
             setLoading(false);
         }
     };
+    
 
     return (
         <div>
