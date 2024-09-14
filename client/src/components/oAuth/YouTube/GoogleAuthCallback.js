@@ -45,7 +45,7 @@ const GoogleAuthCallback = () => {
     <div>
       <h1>Processing authentication...</h1>
       <p>{subscriptionStatus}</p>
-      <button onClick={redirectToTelegram}>Go Back</button>
+      <button onClick={redirectToTelegram}>Go Back to App</button>
     </div>
   );
 };

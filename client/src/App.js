@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { CssBaseline, Container, Typography, Box, AppBar, Toolbar, BottomNavigation, BottomNavigationAction } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import TaskIcon from '@mui/icons-material/List';
@@ -31,15 +31,38 @@ const MainContent = () => {
     }
   }, [location]);
 
+  const hideAppBarAndNav = ['/auth/google/callback'];
+
   return (
     <>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Hod1
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      {!hideAppBarAndNav.includes(location.pathname) && (
+        <>
+          <AppBar position="static">
+            <Toolbar>
+              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                Hod1
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <BottomNavigation
+            value={value}
+            onChange={(event, newValue) => setValue(newValue)}
+            showLabels
+            style={{
+              width: '100%',
+              position: 'fixed',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              zIndex: 1000,
+            }}
+          >
+            <BottomNavigationAction label="Home" icon={<HomeIcon />} component={Link} to="/" />
+            <BottomNavigationAction label="Tasks" icon={<TaskIcon />} component={Link} to="/tasks" />
+            <BottomNavigationAction label="Leaderboard" icon={<LeaderboardIcon />} component={Link} to="/leaderboard" />
+          </BottomNavigation>
+        </>
+      )}
 
       <Container maxWidth="sm" style={{ backgroundColor: '#ffffff', minHeight: '100vh' }}>
         <Box textAlign="center" my={4}>
@@ -51,24 +74,6 @@ const MainContent = () => {
           </Routes>
         </Box>
       </Container>
-
-      <BottomNavigation
-        value={value}
-        onChange={(event, newValue) => setValue(newValue)}
-        showLabels
-        style={{
-          width: '100%',
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1000,
-        }}
-      >
-        <BottomNavigationAction label="Home" icon={<HomeIcon />} component={Link} to="/" />
-        <BottomNavigationAction label="Tasks" icon={<TaskIcon />} component={Link} to="/tasks" />
-        <BottomNavigationAction label="Leaderboard" icon={<LeaderboardIcon />} component={Link} to="/leaderboard" />
-      </BottomNavigation>
     </>
   );
 };
