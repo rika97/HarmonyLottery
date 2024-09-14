@@ -33,7 +33,7 @@ const GoogleAuthCallback = () => {
       }
     } catch (error) {
       console.error('Error verifying subscription:', error);
-      setSubscriptionStatus('Error verifying subscription');
+      setSubscriptionStatus(`Error verifying subscription: ${error}`);
     }
   };
 
