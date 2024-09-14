@@ -8,6 +8,7 @@ import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import Home from './pages/Home';
 import Tasks from './pages/Tasks';
 import Leaderboard from './pages/Leaderboard';
+import GoogleAuthCallback from './components/oAuth/YouTube/GoogleAuthCallback';
 
 const MainContent = () => {
   const [value, setValue] = useState(0);
@@ -46,6 +47,7 @@ const MainContent = () => {
             <Route path="/" element={<Home />} />
             <Route path="/tasks" element={<Tasks />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/auth/google/callback" component={GoogleAuthCallback} />
           </Routes>
         </Box>
       </Container>
