@@ -2,16 +2,17 @@ import React from 'react';
 import { GoogleLogin } from '@react-oauth/google';
 
 const GoogleLoginButton = ({ onSuccess }) => {
-  const handleLoginSuccess = (response) => {
-    window.location.href = `/auth/google/callback?access_token=${response.access_token}`;
+  const handleLoginSuccess = (credentialResponse) => {
+    const token = credentialResponse.credential;
+    window.location.href = `/auth/google/callback?access_token=${token}`;
   };
 
   return (
     <GoogleLogin
       clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-      buttonText="Login with Google"
+      ux_mode="redirect"
       onSuccess={handleLoginSuccess}
-      onFailure={(error) => console.error('Login Failed:', error)}
+      onError={(error) => console.error('Login Failed:', error)}
     />
   );
 };
