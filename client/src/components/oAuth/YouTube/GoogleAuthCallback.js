@@ -37,10 +37,15 @@ const GoogleAuthCallback = () => {
     }
   };
 
+  const redirectToTelegram = () => {
+    window.location.href = 'tg://resolve?domain=HarmonySocialBot';
+  };
+
   return (
     <div>
       <h1>Processing authentication...</h1>
       <p>{subscriptionStatus}</p>
+      <button onClick={redirectToTelegram}>Go Back</button>
     </div>
   );
 };
