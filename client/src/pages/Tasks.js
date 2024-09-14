@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Paper, Box, Typography, Tabs, Tab } from '@mui/material';
 import VideoList from '../components/VideoList';
 import VideoPlayer from '../components/VideoPlayer';
+import SocialTasks from '../components/SocialTasks';
 
 const Tasks = () => {
   const [watchedVideos, setWatchedVideos] = useState(new Set());
@@ -101,7 +102,7 @@ const Tasks = () => {
             </>
           )}
           {selectedTab === 1 && (
-            <Typography variant="h6">Subscribe to YouTube</Typography>
+            <SocialTasks />
           )}
         </Paper>
       </Box>

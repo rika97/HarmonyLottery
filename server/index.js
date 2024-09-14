@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 5001;
 
 const botToken = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new TelegramBot(botToken, { polling: true });
-// const youtubeApiKey = process.env.YOUTUBE_API_KEY;
+const youtubeApiKey = process.env.YOUTUBE_API_KEY;
 
 app.use(cors({
     origin: 'https://hod1.netlify.app',
@@ -154,6 +154,31 @@ app.post('/updateWatchedVideos', (req, res) => {
   }
 
   res.status(200).json({ message: 'Watched video updated' });
+});
+
+app.post('/verifyYouTubeSubscription', async (req, res) => {
+  const { token, channelId } = req.body;
+
+  try {
+    const response = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${token}`);
+    const userId = response.data.sub;
+
+    const subscriptionResponse = await axios.get(`https://www.googleapis.com/youtube/v3/subscriptions?part=snippet&mine=true&key=${youtubeApiKey}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    const subscriptions = subscriptionResponse.data.items;
+    const isSubscribed = subscriptions.some(sub => sub.snippet.resourceId.channelId === channelId);
+
+    if (isSubscribed) {
+      res.json({ success: true, message: 'User is subscribed' });
+    } else {
+      res.json({ success: false, message: 'User is not subscribed' });
+    }
+  } catch (error) {
+    console.error('Error verifying subscription:', error);
+    res.status(500).json({ error: 'Failed to verify subscription' });
+  }
 });
 
 
