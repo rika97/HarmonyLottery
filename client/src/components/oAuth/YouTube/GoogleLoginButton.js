@@ -10,20 +10,11 @@ const GoogleLoginButton = () => {
 
     setDebugMessage('Button clicked');
 
-    if (window.Telegram && window.Telegram.WebApp) {
-      setDebugMessage('Opening in system browser using Telegram WebApp');
-      try {
-        window.Telegram.WebApp.open(googleAuthUrl);
-      } catch (error) {
-        setDebugMessage(`Error opening system browser: ${error.message}`);
-      }
-    } else {
-      setDebugMessage('Opening in the current browser window');
-      try {
-        window.location.href = googleAuthUrl;
-      } catch (error) {
-        setDebugMessage(`Error navigating to URL: ${error.message}`);
-      }
+    try {
+      setDebugMessage('Trying to open Google OAuth URL in system browser');
+      window.open(googleAuthUrl, '_blank');
+    } catch (error) {
+      setDebugMessage(`Error opening new window: ${error.message}`);
     }
   };
 
