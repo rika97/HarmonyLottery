@@ -158,32 +158,31 @@ app.post('/updateWatchedVideos', (req, res) => {
 });
 
 
-app.get('/verify-subscription', async (req, res) => {
-  const userChannelId = req.query.userId;
-  const targetChannelId = 'UCDfuhS7xu69IhK5AJSyiF0g';
-
-  if (!userChannelId) {
-      return res.status(400).json({ message: 'Channel ID is required' });
-  }
+app.post('/verifyYouTubeSubscription', async (req, res) => {
+  const { token, channelId } = req.body;
 
   try {
-      const response = await axios.get('https://www.googleapis.com/youtube/v3/subscriptions', {
-          params: {
-              part: 'snippet',
-              forChannelId: targetChannelId,
-              key: youtubeApiKey
-          }
-      });
+    const response = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${token}`);
+    const userId = response.data.sub;
 
-      const subscriptions = response.data.items;
-      const isSubscribed = subscriptions.some(subscription => subscription.snippet.resourceId.channelId === userChannelId);
+    const subscriptionResponse = await axios.get(`https://www.googleapis.com/youtube/v3/subscriptions?part=snippet&mine=true&key=${youtubeApiKey}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
 
-      return res.json({ message: isSubscribed ? 'User is subscribed' : 'User is not subscribed' });
+    const subscriptions = subscriptionResponse.data.items;
+    const isSubscribed = subscriptions.some(sub => sub.snippet.resourceId.channelId === channelId);
+
+    if (isSubscribed) {
+      res.json({ success: true, message: 'User is subscribed' });
+    } else {
+      res.json({ success: false, message: 'User is not subscribed' });
+    }
   } catch (error) {
-      console.error('Error verifying subscription:', error);
-      return res.status(500).json({ message: 'Failed to verify subscription' });
+    console.error('Error verifying subscription:', error);
+    res.status(500).json({ error: 'Failed to verify subscription' });
   }
 });
+
 
 
 
