@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { Container, Typography, Box, AppBar, Toolbar, BottomNavigation, BottomNavigationAction } from '@mui/material';
+import { CssBaseline, Container, Typography, Box, AppBar, Toolbar, BottomNavigation, BottomNavigationAction } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import TaskIcon from '@mui/icons-material/List';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
@@ -40,14 +40,14 @@ const MainContent = () => {
           </Typography>
         </Toolbar>
       </AppBar>
-      
-      <Container maxWidth="sm" style={{ backgroundColor: '#ffffff' }}>
+
+      <Container maxWidth="sm" style={{ backgroundColor: '#ffffff', minHeight: '100vh' }}>
         <Box textAlign="center" my={4}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/tasks" element={<Tasks />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
-            <Route path="/auth/google/callback" component={GoogleAuthCallback} />
+            <Route path="/auth/google/callback" element={<GoogleAuthCallback />} />
           </Routes>
         </Box>
       </Container>
@@ -75,9 +75,12 @@ const MainContent = () => {
 
 const App = () => {
   return (
-    <Router>
-      <MainContent />
-    </Router>
+    <>
+      <CssBaseline /> 
+      <Router>
+        <MainContent />
+      </Router>
+    </>
   );
 };
 
