@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { CssBaseline, Container, Typography, Box, AppBar, Toolbar, BottomNavigation, BottomNavigationAction } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import TaskIcon from '@mui/icons-material/List';
@@ -81,7 +81,7 @@ const MainContent = () => {
 const App = () => {
   return (
     <>
-      <CssBaseline /> 
+      <CssBaseline />
       <Router>
         <MainContent />
       </Router>
