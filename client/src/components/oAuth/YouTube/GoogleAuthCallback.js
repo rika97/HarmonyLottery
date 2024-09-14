@@ -4,15 +4,18 @@ import axios from 'axios';
 
 const GoogleAuthCallback = () => {
   const location = useLocation();
-  const [status, setStatus] = useState('Processing authentication...');
+  const [subscriptionStatus, setSubscriptionStatus] = useState('');
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const token = params.get('access_token');
+    const getAccessTokenFromHash = () => {
+      const hash = location.hash.substring(1);
+      const params = new URLSearchParams(hash);
+      return params.get('access_token');
+    };
+
+    const token = getAccessTokenFromHash();
     if (token) {
       verifySubscription(token);
-    } else {
-      setStatus('Authentication failed.');
     }
   }, [location]);
 
@@ -22,20 +25,22 @@ const GoogleAuthCallback = () => {
         token,
         channelId: 'UCDfuhS7xu69IhK5AJSyiF0g'
       });
+
       if (result.data.success) {
-        setStatus('User is subscribed to the channel');
+        setSubscriptionStatus('User is subscribed to the channel');
       } else {
-        setStatus('User is not subscribed to the channel');
+        setSubscriptionStatus('User is not subscribed to the channel');
       }
     } catch (error) {
       console.error('Error verifying subscription:', error);
-      setStatus('Error verifying subscription');
+      setSubscriptionStatus('Error verifying subscription');
     }
   };
 
   return (
     <div>
-      <h1>{status}</h1>
+      <h1>Processing authentication...</h1>
+      <p>{subscriptionStatus}</p>
     </div>
   );
 };
