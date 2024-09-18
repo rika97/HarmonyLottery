@@ -162,12 +162,18 @@ app.post('/verifyYouTubeSubscription', async (req, res) => {
   const { token, channelId } = req.body;
 
   try {
-    const response = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${token}`);
-    const userId = response.data.sub;
+    console.log('Received token:', token);
+    console.log('Channel ID:', channelId);
 
-    const subscriptionResponse = await axios.get(`https://www.googleapis.com/youtube/v3/subscriptions?part=snippet&mine=true&key=${youtubeApiKey}`, {
+    const response = await axios.get(`https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${token}`);
+    const userId = response.data.sub;
+    console.log('User ID:', userId);
+
+    const subscriptionResponse = await axios.get(`https://www.googleapis.com/youtube/v3/subscriptions?part=snippet&mine=true`, {
       headers: { Authorization: `Bearer ${token}` }
     });
+
+    console.log('Subscription Response:', subscriptionResponse.data);
 
     const subscriptions = subscriptionResponse.data.items;
     const isSubscribed = subscriptions.some(sub => sub.snippet.resourceId.channelId === channelId);
@@ -178,10 +184,11 @@ app.post('/verifyYouTubeSubscription', async (req, res) => {
       res.json({ success: false, message: 'User is not subscribed' });
     }
   } catch (error) {
-    console.error('Error verifying subscription:', error);
-    res.status(500).json({ error: 'Failed to verify subscription' });
+    console.error('Error verifying subscription:', error.response?.data || error.message);  // Log error details
+    res.status(500).json({ error: 'Failed to verify subscription', details: error.response?.data || error.message });
   }
 });
+
 
 
 

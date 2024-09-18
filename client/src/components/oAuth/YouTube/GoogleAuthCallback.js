@@ -27,9 +27,9 @@ const GoogleAuthCallback = () => {
       });
 
       if (result.data.success) {
-        setSubscriptionStatus('User is subscribed to the channel');
+        setSubscriptionStatus('Successfuly verified subscription.');
       } else {
-        setSubscriptionStatus('User is not subscribed to the channel');
+        setSubscriptionStatus('You are not subscribed to the channel.');
       }
     } catch (error) {
       console.error('Error verifying subscription:', error);
